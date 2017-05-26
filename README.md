@@ -1,1 +1,2 @@
-# yii2-file-storage
+# Store component for Yii2
+Saves files and nothing any more.
