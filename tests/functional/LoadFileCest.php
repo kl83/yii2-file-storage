@@ -15,7 +15,7 @@ class LoadFileCest
     // tests
     public function tryToTestJpgFileUpload(FunctionalTester $I)
     {
-        $I->sendPOST('/', [], [
+        $I->sendPOST('/filestorage/default/upload', [], [
             'attachment' => [
                 'name' => 'alien.jpg',
                 'type' => 'image/jpeg',
@@ -28,10 +28,14 @@ class LoadFileCest
         $I->seeResponseContainsJson([ 'success' => true ]);
         $I->seeResponseMatchesJsonType([
             'success' => 'boolean',
-            'path' => 'string',
-            'url' => 'string',
+            'files' => [
+                'attachment' => [
+                    'path' => 'string',
+                    'url' => 'string',
+                ],
+            ],
         ]);
-        $filePath = $I->grabDataFromResponseByJsonPath('path')[0];
+        $filePath = $I->grabDataFromResponseByJsonPath('files.attachment.path')[0];
         $I->assertFileExists($filePath);
     }
 
@@ -47,6 +51,7 @@ class LoadFileCest
             ],
         ]);
         $I->seeResponseIsJson();
-        $I->dontSeeResponseContainsJson([ 'success' => true ]);
+        $success = $I->grabResponse();
+        $I->assertEquals('{"succes":false}', $success);
     }
 }

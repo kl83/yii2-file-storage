@@ -13,6 +13,10 @@ return [
             'enableCookieValidation' => false,
             'enableCsrfValidation' => false,
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
     ],
     'modules' => [
         'filestorage' => 'kl83\modules\filestorage\Module',
