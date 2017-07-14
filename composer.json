@@ -1,10 +1,7 @@
 {
     "name": "kl83/yii2-file-storage",
     "description": "Yii2 file storage",
-    "keywords": ["yii2", "file", "storage"],
-    "license": "BSD-3-Clause",
-    "version": "0.0.1",
-    "minimum-stability": "dev",
+    "license": "MIT",
     "authors": [
         {
             "name": "Aleksandr Solovyov",
@@ -19,15 +16,6 @@
         "flow/jsonpath": "@dev"
     },
     "autoload": {
-        "psr-4": { "kl83\\filestorage\\": "" }
-    },
-    "config": {
-        "process-timeout": 1800,
-        "fxp-asset": {
-            "installer-paths": {
-                "npm-asset-library": "vendor/npm",
-                "bower-asset-library": "vendor/bower"
-            }
-        }
+        "psr-4": { "kl83\\modules\\filestorage\\": "module/" }
     }
 }

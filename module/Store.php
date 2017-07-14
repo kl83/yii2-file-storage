@@ -1,6 +1,6 @@
 <?php
 
-namespace kl83\filestorage;
+namespace kl83\modules\filestorage;
 
 use Yii;
 
@@ -9,23 +9,6 @@ use Yii;
  */
 class Store extends \yii\base\Object
 {
-    public $uploadDir;
-    public $uploadDirUrl;
-
-    public function init()
-    {
-        if ( ! $this->uploadDir ) {
-            $this->uploadDir = Yii::getAlias("@webroot/uploads");
-        }
-        if ( ! $this->uploadDirUrl ) {
-            $this->uploadDirUrl = Yii::getAlias("@web/uploads");
-        }
-        if ( ! file_exists($this->uploadDir) ) {
-            throw new \yii\base\Exception("Upload dir '$this->uploadDir' does not exist");
-        }
-        parent::init();
-    }
-
     /**
      * Return user directory relative path.
      * It is at the upload dir.
@@ -41,7 +24,7 @@ class Store extends \yii\base\Object
             $userId = (int)$userId;
         }
         $relPath = ( $userId % 1000 ) . "/$userId";
-        $userDir = "$this->uploadDir/$relPath";
+        $userDir = Module::getInstance()->uploadDir."/$relPath";
         if ( ! file_exists($userDir) ) {
             if ( ! mkdir($userDir, 0777, true) ) {
                 throw new \yii\base\Exception("Could not create directory '$userDir'");
@@ -68,9 +51,9 @@ class Store extends \yii\base\Object
             }
             $relDirPath = "$userDir/" . $randomDir;
             $relFilePath = "$relDirPath/$fileName";
-            $filePath = "$this->uploadDir/$relFilePath";
+            $filePath = Module::getInstance()->uploadDir."/$relFilePath";
         } while ( file_exists($filePath) );
-        $dirPath = "$this->uploadDir/$relDirPath";
+        $dirPath = Module::getInstance()->uploadDir."/$relDirPath";
         if ( ! file_exists($dirPath) ) {
             if ( ! mkdir($dirPath, 0777, true) ) {
                 throw new \yii\base\Exception("Could not create directory '$dirPath'");
@@ -92,13 +75,13 @@ class Store extends \yii\base\Object
             return false;
         } else {
             $relFilePath = $this->generateFilePath($file->name);
-            $filePath = "$this->uploadDir/$relFilePath";
+            $filePath = Module::getInstance()->uploadDir."/$relFilePath";
             if ( ! $file->saveAs($filePath) ) {
                 throw new \yii\base\Exception("Could not save file '$filePath'");
             }
             return [
                 'path' => $filePath,
-                'url' => "$this->uploadDirUrl/$relFilePath",
+                'url' => Module::getInstance()->uploadDirUrl."/$relFilePath",
             ];
         }
     }

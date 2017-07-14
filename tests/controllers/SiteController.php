@@ -10,14 +10,18 @@ class SiteController extends \yii\web\Controller
 
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $file = UploadedFile::getInstanceByName('attachment');
-        $result = Yii::$app->store->save($file);
-        if ( $result ) {
-            $result['success'] = true;
-            return $result;
+        if ( Yii::$app->request->isPost ) {
+            $file = UploadedFile::getInstanceByName('attachment');
+            $result = Yii::$app->getModule('filestorage')->store->save($file);
+            if ( $result ) {
+                $result['success'] = true;
+                return $this->asJson($result);
+            } else {
+                return $this->asJson([ 'succes' => false ]);
+            }
         } else {
-            return [ 'succes' => false ];
+            $m = Yii::$app->getModule('filestorage');
+            print_r($m->store);
         }
     }
 }

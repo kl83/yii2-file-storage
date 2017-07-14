@@ -3,9 +3,6 @@ return [
     'id' => 'Test app',
     'basePath' => __DIR__,
     'components' => [
-        'store' => [
-            'class' => 'kl83\filestorage\Store',
-        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
@@ -16,5 +13,8 @@ return [
             'enableCookieValidation' => false,
             'enableCsrfValidation' => false,
         ],
+    ],
+    'modules' => [
+        'filestorage' => 'kl83\modules\filestorage\Module',
     ],
 ];
