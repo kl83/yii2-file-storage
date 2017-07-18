@@ -7,6 +7,9 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser:
-            url: http://localhost/myapp
+        - Asserts
+        - WebDriver:
+            url: http://filestorage.net-guru.ru
+            browser: chrome
+            host: 10.9.128.189
         - \Helper\Acceptance

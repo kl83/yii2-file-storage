@@ -3,25 +3,27 @@
 namespace app\controllers;
 
 use Yii;
-use app\_extensions\UploadedFile;
+use kl83\modules\filestorage\models\FileSet;
 
 class SiteController extends \yii\web\Controller
 {
 
-    public function actionIndex()
+    public function actionNewPicSet()
     {
-        if ( Yii::$app->request->isPost ) {
-            $file = UploadedFile::getInstanceByName('attachment');
-            $result = Yii::$app->getModule('filestorage')->store->save($file);
-            if ( $result ) {
-                $result['success'] = true;
-                return $this->asJson($result);
-            } else {
-                return $this->asJson([ 'succes' => false ]);
-            }
-        } else {
-            $m = Yii::$app->getModule('filestorage');
-            print_r($m->store);
-        }
+        return $this->render('new-pic-set');
+    }
+
+    public function actionPicSet($id)
+    {
+        return $this->render('pic-set', [
+            'fileSet' => FileSet::findOne($id),
+        ]);
+    }
+
+    public function actionPicSetMaxImages($id)
+    {
+        return $this->render('pic-set-max-images', [
+            'fileSet' => FileSet::findOne($id),
+        ]);
     }
 }

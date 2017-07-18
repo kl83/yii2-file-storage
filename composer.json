@@ -10,12 +10,20 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": "^2.0.0"
+        "yiisoft/yii2": "^2.0.0",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-imagine": "~2.1.0",
+        "yiisoft/yii2-jui": "~2.0.0",
+        "kl83/yii2-sortable-behaviour": "~1.1.0",
+        "kl83/yii2-jquery-form-asset": "~1.1.0"
     },
     "require-dev": {
         "flow/jsonpath": "@dev"
     },
     "autoload": {
-        "psr-4": { "kl83\\modules\\filestorage\\": "module/" }
+        "psr-4": {
+            "kl83\\modules\\filestorage\\": "module/",
+            "kl83\\widgets\\": "widgets/"
+        }
     }
 }

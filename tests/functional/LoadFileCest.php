@@ -25,23 +25,19 @@ class LoadFileCest
             ],
         ]);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson([ 'success' => true ]);
         $I->seeResponseMatchesJsonType([
-            'success' => 'boolean',
-            'files' => [
-                'attachment' => [
-                    'path' => 'string',
-                    'url' => 'string',
-                ],
+            'attachment' => [
+                'id' => 'integer',
+                'url' => 'string',
             ],
         ]);
-        $filePath = $I->grabDataFromResponseByJsonPath('files.attachment.path')[0];
-        $I->assertFileExists($filePath);
+        $filePath = $I->grabDataFromResponseByJsonPath('attachment.url')[0];
+        $I->assertFileExists(__DIR__.DIRECTORY_SEPARATOR."..$filePath");
     }
 
     public function tryToTestPhpFileUpload(FunctionalTester $I)
     {
-        $I->sendPOST('/', [], [
+        $I->sendPOST('/filestorage/default/upload', [], [
             'attachment' => [
                 'name' => 'exploit.php',
                 'type' => 'text/php',
@@ -51,7 +47,12 @@ class LoadFileCest
             ],
         ]);
         $I->seeResponseIsJson();
-        $success = $I->grabResponse();
-        $I->assertEquals('{"succes":false}', $success);
+        $I->seeResponseMatchesJsonType([
+            'attachment' => [
+                'id' => 'boolean',
+            ],
+        ]);
+        $fileId = $I->grabDataFromResponseByJsonPath('attachment.id')[0];
+        $I->assertEquals(false, $fileId);
     }
 }
