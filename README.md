@@ -27,7 +27,7 @@ CONFIGURATION
 Add next lines in Yii2 config to components section:
 ~~~
 "store" => [
-    'class' => 'kl83\filestorage\Store',
+    'class' => '\kl83\filestorage\Store',
     'uploadDir' => '', // default is @webroot/uploads
     'uploadDirUrl' => '', // default is @web/uploads
 ]
