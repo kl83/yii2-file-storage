@@ -13,7 +13,7 @@ class PicSetAsset extends \yii\web\AssetBundle
 
     public function init()
     {
-        $this->sourcePath = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dist';
+        $this->sourcePath = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dist'.DIRECTORY_SEPARATOR.'picset-widget';
         parent::init();
     }
 }
