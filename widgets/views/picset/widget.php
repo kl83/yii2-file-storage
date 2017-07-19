@@ -16,7 +16,7 @@ $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: 
     <?php if ( $hasModel ) : ?>
         <?= Html::activeHiddenInput($widget->model, $widget->attribute) ?>
     <?php else : ?>
-        <?= Html::hiddenInput($widget->name) ?>
+        <?= Html::hiddenInput($widget->name, $fileSet->id) ?>
     <?php endif; ?>
 
     <?= Html::fileInput("$widget->id-file", null, [

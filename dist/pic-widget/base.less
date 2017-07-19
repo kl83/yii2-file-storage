@@ -1,0 +1,79 @@
+.kl83-picset-widget {
+    input[type='file'] {
+        display: none;
+    }
+    .items {
+        .item {
+            position: relative;
+            float: left;
+            width: 140px;
+            height: 140px;
+            margin-right: 15px;
+            border-radius: 3px;
+            background: white;
+            box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
+            opacity: 1;
+            transition:
+                width 0.2s,
+                margin 0.2s,
+                opacity 0.2s 0.2s;
+            .image {
+                width: 130px;
+                height: 130px;
+                margin: 5px;
+                border-radius: 3px;
+                background-size: contain;
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+            .remove-item {
+                position: absolute;
+                width: 22px;
+                height: 22px;
+                right: 3px;
+                top: 3px;
+                background: white;
+                border-radius: 11px;
+                cursor: pointer;
+                opacity: 0.6;
+                transition: 0.4s;
+                .glyphicon {
+                    font-size: 18px;
+                    color: #333;
+                    margin: 1px 0 0 2px;
+                }
+            }
+            &.animation {
+                width: 0;
+                margin-right: 0;
+                opacity: 0;
+                transition:
+                    opacity 0.2s,
+                    width 0.2s 0.2s,
+                    margin 0.2s 0.2s;
+            }
+            &:hover {
+                .remove-item {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .new-item {
+        display: flex;
+        margin-right: 0;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        span {
+            font-size: 40px;
+            color: #777;
+            transition: 0.4s;
+        }
+        &:hover {
+            span {
+                color: #333;
+            }
+        }
+    }
+}
