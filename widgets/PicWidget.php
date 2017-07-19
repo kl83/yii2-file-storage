@@ -1,6 +1,10 @@
 <?php
 namespace kl83\widgets;
 
+use Yii;
+use yii\helpers\Url;
+use yii\helpers\Json;
+
 class PicWidget extends \yii\widgets\InputWidget
 {
     /**
@@ -29,6 +33,9 @@ class PicWidget extends \yii\widgets\InputWidget
     public function run()
     {
         $value = $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
+        if ( $value ) {
+            $this->wrapperOptions['class'] .= " show-picture";
+        }
         $params = [
             'uploadUrl' => Url::to(["{$this->filestorageModule->id}/default/upload"]),
             'removeUrl' => Url::to(["{$this->filestorageModule->id}/default/delete-file"]),
