@@ -19,7 +19,7 @@ INSTALLATION
 Simplest way to install this component throught composer.
 Add this line in composer.json at required section:
 ~~~
-"kl83/yii2-file-storage": "@dev"
+"kl83/yii2-file-storage": "0.0.*"
 ~~~
 
 CONFIGURATION
