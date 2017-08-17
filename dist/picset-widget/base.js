@@ -40,7 +40,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
                 url: params.uploadUrl+'?fileSetId='+fileSetInput.val()+'&attributes='+fileInputName,
                 type: 'post',
                 success: function(data){
-                    if ( fileSetInput.val() === '' ) {
+                    if ( fileSetInput.val() === '0' ) {
                         fileSetInput.val(data.fileSetId);
                     }
                     sortable.append(data.html[fileInputName]);
