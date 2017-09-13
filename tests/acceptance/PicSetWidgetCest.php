@@ -16,7 +16,7 @@ class PicSetWidgetCest
     // tests
     public function tryToTestAddPhotoToNewPicsetAndCheckPhotoExists(AcceptanceTester $I)
     {
-        $I->amOnPage('/site/new-pic-set');
+        $I->amOnPage('/?r=site/new-pic-set');
 
         $I->dontSeeElement(['css' => "div.item"]);
         $I->attachFile(['css' => '#w1-file'], 'alien.jpg');
@@ -32,7 +32,7 @@ class PicSetWidgetCest
 
     public function tryToTestAddPhotoToNewPicsetAndCheckPicsetExists(AcceptanceTester $I)
     {
-        $I->amOnPage('/site/new-pic-set');
+        $I->amOnPage('?r=/site/new-pic-set');
 
         $I->dontSeeElement(['css' => "div.item"]);
         $I->attachFile(['css' => '#w1-file'], 'alien.jpg');
@@ -41,7 +41,7 @@ class PicSetWidgetCest
         $fileId1 = $I->grabAttributeFrom(['css' => 'div.item'], 'data-id');
 
         $fieldSetId = $I->grabValueFrom(['css' => '#fileset-id']);
-        $I->amOnPage("/site/pic-set?id=".$fieldSetId);
+        $I->amOnPage("?r=/site/pic-set&id=".$fieldSetId);
         $fileId2 = $I->grabAttributeFrom(['css' => 'div.item'], 'data-id');
 
         $I->assertEquals($fileId1, $fileId2);

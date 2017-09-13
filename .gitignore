@@ -1,5 +1,7 @@
 /vendor
 /composer.lock
-/tests/web/assets/
-/tests/web/uploads/
+
+nbproject
+
 tests/_output/*
+tests/_support/_generated

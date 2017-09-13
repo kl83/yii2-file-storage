@@ -18,7 +18,8 @@
         "kl83/yii2-jquery-form-asset": "~1.1.0"
     },
     "require-dev": {
-        "flow/jsonpath": "@dev"
+        "flow/jsonpath": "@dev",
+        "facebook/webdriver": "^1.0.1"
     },
     "autoload": {
         "psr-4": {

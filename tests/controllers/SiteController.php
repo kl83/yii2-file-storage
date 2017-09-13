@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
-use Yii;
 use kl83\modules\filestorage\models\FileSet;
 use kl83\modules\filestorage\models\File;
 
 class SiteController extends \yii\web\Controller
 {
+    public $defaultAction = 'new-pic-set';
 
     public function actionNewPicSet()
     {

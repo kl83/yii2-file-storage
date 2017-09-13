@@ -37,10 +37,10 @@ var kl83RegisterPicSetWidget = function(elId, params){
         // Upload selected file
         fileInput.change(function(){
             form.ajaxSubmit({
-                url: params.uploadUrl+'?fileSetId='+fileSetInput.val()+'&attributes='+fileInputName,
+                url: params.uploadUrl+(/\?/.test(params.uploadUrl)?'&':'?')+'fileSetId='+fileSetInput.val()+'&attributes='+fileInputName,
                 type: 'post',
                 success: function(data){
-                    if ( fileSetInput.val() === '0' ) {
+                    if ( fileSetInput.val() === '0' || ! /\d+/.test(fileSetInput.val()) ) {
                         fileSetInput.val(data.fileSetId);
                     }
                     sortable.append(data.html[fileInputName]);
@@ -64,5 +64,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
                 }, 400);
             });
         });
+        
+        checkLimit();
     });
 };

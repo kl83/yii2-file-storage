@@ -11,9 +11,9 @@ $config = [
     'components' => [
         'db' => [
             'class' => '\yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=codeception_filestorage',
-            'username' => 'codeception',
-            'password' => 'codeception',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=filestorage',
+            'username' => 'root',
+            'password' => 'root',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -22,10 +22,6 @@ $config = [
         'request' => [
             'enableCookieValidation' => false,
             'enableCsrfValidation' => false,
-        ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
         ],
     ],
     'modules' => [

@@ -13,6 +13,9 @@ class PicSetAsset extends \yii\web\AssetBundle
 
     public function init()
     {
+        if ( YII_DEBUG ) {
+            $this->publishOptions['forceCopy'] = true;
+        }
         $this->sourcePath = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dist'.DIRECTORY_SEPARATOR.'picset-widget';
         parent::init();
     }

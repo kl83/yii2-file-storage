@@ -1,6 +1,5 @@
 <?php
 
-
 class LoadFileCest
 {
     public function _before(FunctionalTester $I)
@@ -15,7 +14,7 @@ class LoadFileCest
     // tests
     public function tryToTestJpgFileUpload(FunctionalTester $I)
     {
-        $I->sendPOST('/filestorage/default/upload', [], [
+        $I->sendPOST('/?r=filestorage/default/upload', [], [
             'attachment' => [
                 'name' => 'alien.jpg',
                 'type' => 'image/jpeg',
@@ -37,7 +36,7 @@ class LoadFileCest
 
     public function tryToTestPhpFileUpload(FunctionalTester $I)
     {
-        $I->sendPOST('/filestorage/default/upload', [], [
+        $I->sendPOST('/?r=filestorage/default/upload', [], [
             'attachment' => [
                 'name' => 'exploit.php',
                 'type' => 'text/php',
