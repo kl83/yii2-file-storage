@@ -1,18 +1,13 @@
 <?php
 namespace kl83\filestorage;
 
-use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use kl83\filestorage\Module;
 use kl83\filestorage\models\FileSet;
 
 class PicSetWidget extends \yii\widgets\InputWidget
 {
-    /**
-     * Filestorage module id or module instance
-     * @var string|\kl83\filestorage\Module
-     */
-    public $filestorageModule = 'filestorage';
     /**
      * Wrapper DOM element html-attributes
      * @var array
@@ -25,31 +20,18 @@ class PicSetWidget extends \yii\widgets\InputWidget
      * @var integer|boolean
      */
     public $maxImages = false;
+    /**
+     * Filestorage module instance
+     * @var \kl83\filestorage\Module
+     */
+    private $filestorageModule;
 
     public function init()
     {
         parent::init();
-        if ( is_string($this->filestorageModule) ) {
-            $this->filestorageModule = Yii::$app->getModule($this->filestorageModule);
-        }
+        $this->filestorageModule = Module::findInstance();
         $this->wrapperOptions['id'] = "$this->id-wrapper";
-        $this->registerTranslations();
         PicSetAsset::register($this->view);
-    }
-
-    /**
-     * Register translations
-     */
-    private function registerTranslations()
-    {
-        Yii::$app->i18n->translations['kl83/widgets/picset'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'en-US',
-            'basePath' =>  __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'messages',
-            'fileMap' => [
-                'kl83/widgets/picset' => 'picset.php',
-            ],
-        ];
     }
 
     /**

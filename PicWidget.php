@@ -8,24 +8,22 @@ use yii\helpers\Json;
 class PicWidget extends \yii\widgets\InputWidget
 {
     /**
-     * Filestorage module id or module instance
-     * @var string|\kl83\filestorage\Module
-     */
-    public $filestorageModule = 'filestorage';
-    /**
      * Wrapper DOM element html-attributes
      * @var array
      */
     public $wrapperOptions = [
         'class' => 'kl83-pic-widget',
     ];
+    /**
+     * Filestorage module instance
+     * @var \kl83\filestorage\Module
+     */
+    private $filestorageModule;
 
     public function init()
     {
         parent::init();
-        if ( is_string($this->filestorageModule) ) {
-            $this->filestorageModule = Yii::$app->getModule($this->filestorageModule);
-        }
+        $this->filestorageModule = Module::findInstance();
         $this->wrapperOptions['id'] = "$this->id-wrapper";
         PicAsset::register($this->view);
     }
