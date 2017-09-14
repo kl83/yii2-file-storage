@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
-/* @var $widget \kl83\widgets\PicSetWidget */
+/* @var $widget \kl83\filestorage\PicSetWidget */
 /* @var $hasModel boolean */
-/* @var $fileSet \kl83\modules\filestorage\models\FileSet */
+/* @var $fileSet \kl83\filestorage\models\FileSet */
 
 $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: none' : '';
 

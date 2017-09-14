@@ -1,8 +1,8 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use kl83\widgets\PicSetWidget;
-use kl83\modules\filestorage\models\FileSet;
+use kl83\filestorage\PicSetWidget;
+use kl83\filestorage\models\FileSet;
 
 $fileSet = new FileSet;
 

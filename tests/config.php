@@ -25,7 +25,11 @@ $config = [
         ],
     ],
     'modules' => [
-        'filestorage' => 'kl83\modules\filestorage\Module',
+        'filestorage' => [
+            'class' => 'kl83\filestorage\Module',
+            'maxImageWidth' => 800,
+            'maxImageHeight' => 600,
+        ]
     ],
 ];
 

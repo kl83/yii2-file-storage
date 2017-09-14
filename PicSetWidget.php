@@ -1,16 +1,16 @@
 <?php
-namespace kl83\widgets;
+namespace kl83\filestorage;
 
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use kl83\modules\filestorage\models\FileSet;
+use kl83\filestorage\models\FileSet;
 
 class PicSetWidget extends \yii\widgets\InputWidget
 {
     /**
      * Filestorage module id or module instance
-     * @var string|\kl83\modules\filestorage\Module
+     * @var string|\kl83\filestorage\Module
      */
     public $filestorageModule = 'filestorage';
     /**
@@ -21,8 +21,8 @@ class PicSetWidget extends \yii\widgets\InputWidget
         'class' => 'kl83-picset-widget',
     ];
     /**
-     * Maximum possible count of images.
-     * @var integer
+     * Maximum possible count of images. False is unlimited count.
+     * @var integer|boolean
      */
     public $maxImages = false;
 

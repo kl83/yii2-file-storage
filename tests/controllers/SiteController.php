@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use kl83\modules\filestorage\models\FileSet;
-use kl83\modules\filestorage\models\File;
+use kl83\filestorage\models\FileSet;
+use kl83\filestorage\models\File;
 
 class SiteController extends \yii\web\Controller
 {

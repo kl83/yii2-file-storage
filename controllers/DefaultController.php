@@ -1,14 +1,12 @@
 <?php
-namespace kl83\modules\filestorage\controllers;
+namespace kl83\filestorage\controllers;
 
 use Yii;
-use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
-use yii\web\ForbiddenHttpException;
-use kl83\modules\filestorage\Module;
-use kl83\modules\filestorage\models\File;
-use kl83\modules\filestorage\models\FileSet;
+use kl83\filestorage\Module;
+use kl83\filestorage\models\File;
+use kl83\filestorage\models\FileSet;
 
 /**
  *
@@ -68,7 +66,7 @@ class DefaultController extends \yii\web\Controller
             throw new BadRequestHttpException;
         }
         $result = [];
-        $uploadedFileClassName = YII_ENV != 'test' ? '\yii\web\UploadedFile' : '\kl83\modules\filestorage\UploadedFile';
+        $uploadedFileClassName = YII_ENV != 'test' ? '\yii\web\UploadedFile' : '\kl83\filestorage\UploadedFile';
         foreach ( $attributes as $attribute ) {
             $result[$attribute] = $uploadedFileClassName::getInstanceByName($attribute);
         }
@@ -83,13 +81,8 @@ class DefaultController extends \yii\web\Controller
      */
     private function saveFile($uploadedFile, $fileSetId = null)
     {
-        $module = Module::getInstance();
         $file = new File([
-            'uploadDir' => $module->uploadDir,
-            'uploadDirUrl' => $module->uploadDirUrl,
             'uploadedFile' => $uploadedFile,
-            'maxImageWidth' => $module->maxImageWidth,
-            'maxImageHeight' => $module->maxImageHeight,
             'fileSetId' => $fileSetId ? $fileSetId : 0,
         ]);
         $file->save();
@@ -114,7 +107,7 @@ class DefaultController extends \yii\web\Controller
     /**
      * Looks for a fileset by ID or creates a new one.
      * @param integer $id
-     * @return \kl83\modules\filestorage\models\FileSet
+     * @return \kl83\filestorage\models\FileSet
      * @throws NotFoundHttpException
      */
     private function findFileSet($id)
@@ -138,7 +131,7 @@ class DefaultController extends \yii\web\Controller
     /**
      * Looks for a file by ID.
      * @param integer $id
-     * @return \kl83\modules\filestorage\models\File
+     * @return \kl83\filestorage\models\File
      * @throws NotFoundHttpException
      */
     private function findFile($id)
@@ -219,7 +212,7 @@ class DefaultController extends \yii\web\Controller
         $files = $this->saveFiles($uploadedFiles, $fileSet->id);
         $html = [];
         foreach ( $files as $attribute => $file ) {
-            $html[$attribute] = $this->renderPartial('../../../widgets/views/picset/_item.php', [
+            $html[$attribute] = $this->renderPartial('../../views/picset/_item.php', [
                 'file' => $file,
                 'animate' => true,
             ]);

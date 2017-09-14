@@ -1,5 +1,5 @@
 <?php
-namespace kl83\widgets;
+namespace kl83\filestorage;
 
 use Yii;
 use yii\helpers\Url;
@@ -9,7 +9,7 @@ class PicWidget extends \yii\widgets\InputWidget
 {
     /**
      * Filestorage module id or module instance
-     * @var string|\kl83\modules\filestorage\Module
+     * @var string|\kl83\filestorage\Module
      */
     public $filestorageModule = 'filestorage';
     /**

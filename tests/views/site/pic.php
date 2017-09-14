@@ -1,9 +1,9 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use kl83\widgets\PicWidget;
+use kl83\filestorage\PicWidget;
 
-/* @var $file \kl83\modules\filestorage\models\File */
+/* @var $file \kl83\filestorage\models\File */
 
 ?>
 

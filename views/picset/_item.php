@@ -1,6 +1,6 @@
 <?php
 
-/* @var $file \kl83\modules\filestorage\models\File */
+/* @var $file \kl83\filestorage\models\File */
 /* @var $animate boolean */
 
 ?>

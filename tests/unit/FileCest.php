@@ -1,6 +1,6 @@
 <?php
 
-use kl83\modules\filestorage\models\File;
+use kl83\filestorage\models\File;
 
 class FileCest
 {
@@ -15,9 +15,7 @@ class FileCest
     // tests
     public function tryToTestUserDirGenerator(UnitTester $I)
     {
-        $file = new File([
-            'uploadDir' => __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'uploads',
-        ]);
+        $file = new File;
         $I->assertRegExp("~0/0$~", $file->getUserDir(0));
         $I->assertRegExp("~55/55$~", $file->getUserDir(55));
         $I->assertRegExp("~55/1055$~", $file->getUserDir(1055));

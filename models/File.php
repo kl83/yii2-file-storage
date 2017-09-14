@@ -1,10 +1,10 @@
 <?php
-namespace kl83\modules\filestorage\models;
+namespace kl83\filestorage\models;
 
 use Yii;
 use yii\base\Exception;
-use kl83\modules\filestorage\Module;
 use yii\imagine\Image;
+use kl83\filestorage\Module;
 
 /**
  *
@@ -13,36 +13,22 @@ use yii\imagine\Image;
  * @property integer $fileSetId
  * @property integer $createdAt
  * @property integer $createdBy
- * @property string $path
  * @property string $url
+ * @property string $path
+ * @property string $relPath
  */
 class File extends \yii\db\ActiveRecord
 {
     /**
-     * Directory to save the file
-     * @var string
-     */
-    public $uploadDir;
-    /**
-     * Base url to access the file
-     * @var string
-     */
-    public $uploadDirUrl;
-    /**
-     * Uploaded file
+     * Uploaded file.
      * @var \yii\web\UploadedFile
      */
     public $uploadedFile;
     /**
-     * If uploaded file is an image, then the module checks its width and reduces it to this value.
-     * @var integer
+     * Module instance.
+     * @var kl83\filestorage\Module
      */
-    public $maxImageWidth;
-    /**
-     * If uploaded file is an image, then the module checks its height and reduces it to this value.
-     * @var integer
-     */
-    public $maxImageHeight;
+    private $moduleInstance;
 
     public static function tableName()
     {
@@ -61,7 +47,7 @@ class File extends \yii\db\ActiveRecord
 
     public function init()
     {
-        Module::registerTranslations();
+        $this->moduleInstance = Module::findInstance();
         $this->on(self::EVENT_BEFORE_INSERT, function(){
             $this->createdBy = (int)Yii::$app->user->id;
         });
@@ -69,10 +55,10 @@ class File extends \yii\db\ActiveRecord
             try {
                 $img = Image::getImagine()->open($this->path);
                 $box = $img->getSize();
-                if ( $box->getWidth() > $this->maxImageWidth || $box->getHeight() > $this->maxImageHeight ) {
-                    $box = $box->widen($this->maxImageWidth);
-                    if ( $box->getHeight() > $this->maxImageHeight ) {
-                        $box = $box->heighten($this->maxImageHeight);
+                if ( $box->getWidth() > $this->moduleInstance->maxImageWidth || $box->getHeight() > $this->moduleInstance->maxImageHeight ) {
+                    $box = $box->widen($this->moduleInstance->maxImageWidth);
+                    if ( $box->getHeight() > $this->moduleInstance->maxImageHeight ) {
+                        $box = $box->heighten($this->moduleInstance->maxImageHeight);
                     }
                     $img->resize($box)->save();
                 }
@@ -88,11 +74,11 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uploadDir'], function(){
+            [['uploadedFile'], function(){
                 if ( $this->isNewRecord ) {
-                    if ( ! file_exists($this->uploadDir) || ! is_dir($this->uploadDir) ) {
+                    if ( ! file_exists($this->moduleInstance->uploadDir) || ! is_dir($this->moduleInstance->uploadDir) ) {
                         $msg = Yii::t( Module::TRANSLATION_NAME, 'Directory "{d}" don\'t exists or is not a directory!', [
-                            'd' => $this->uploadDir,
+                            'd' => $this->moduleInstance->uploadDir,
                         ]);
                         throw new Exception($msg);
                     }
@@ -101,7 +87,7 @@ class File extends \yii\db\ActiveRecord
             [['uploadedFile'], function(){
                 if ( $this->isNewRecord ) {
                     if ( preg_match('~\.(php|cgi|htacess|htpasswd)$~', $this->uploadedFile->name, $m) ) {
-                        $msg = Yii::t( 'kl83/modules/filestorage', 'Uploading {t} files is forbidden!', [
+                        $msg = Yii::t( Module::TRANSLATION_NAME, 'Uploading {t} files is forbidden!', [
                             't' => $m[1],
                         ]);
                         $this->addError('uploadedFile', $msg);
@@ -122,15 +108,13 @@ class File extends \yii\db\ActiveRecord
      */
     private function saveFile()
     {
-        $relFilePath = $this->generateFilePath($this->uploadedFile->name);
-        $this->path = $this->uploadDir."/$relFilePath";
+        $this->relPath = $this->generateFilePath($this->uploadedFile->name);
         if ( ! $this->uploadedFile->saveAs($this->path) ) {
             $msg = Yii::t(Module::TRANSLATION_NAME, 'Could not save file "{f}"!', [
                 'f' => $this->path,
             ]);
             throw new Exception($msg);
         }
-        $this->url = $this->uploadDirUrl."/$relFilePath";
     }
 
     /**
@@ -163,7 +147,7 @@ class File extends \yii\db\ActiveRecord
             $userId = (int)$userId;
         }
         $relPath = ( $userId % 1000 ) . "/$userId";
-        $userDir = $this->uploadDir."/$relPath";
+        $userDir = $this->moduleInstance->uploadDir."/$relPath";
         if ( ! file_exists($userDir) ) {
             $this->createDirectory($userDir);
         }
@@ -188,12 +172,30 @@ class File extends \yii\db\ActiveRecord
             }
             $relDirPath = "$userDir/" . $randomDir;
             $relFilePath = "$relDirPath/$fileName";
-            $filePath = $this->uploadDir."/$relFilePath";
+            $filePath = $this->moduleInstance->uploadDir."/$relFilePath";
         } while ( file_exists($filePath) );
-        $dirPath = $this->uploadDir."/$relDirPath";
+        $dirPath = $this->moduleInstance->uploadDir."/$relDirPath";
         if ( ! file_exists($dirPath) ) {
             $this->createDirectory($dirPath);
         }
         return $relFilePath;
+    }
+
+    /**
+     * File path.
+     * @return string
+     */
+    public function getPath()
+    {
+        return "{$this->moduleInstance->uploadDir}/$this->relPath";
+    }
+
+    /**
+     * File url.
+     * @return string
+     */
+    public function getUrl()
+    {
+        return "{$this->moduleInstance->uploadDirUrl}/$this->relPath";
     }
 }

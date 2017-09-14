@@ -1,5 +1,5 @@
 <?php
-namespace kl83\modules\filestorage;
+namespace kl83\filestorage;
 
 use Yii;
 
@@ -8,7 +8,7 @@ use Yii;
  */
 class Module extends \yii\base\Module
 {
-    const TRANSLATION_NAME = 'kl83/modules/filestorage';
+    const TRANSLATION_NAME = 'kl83/filestorage';
 
     /**
      * Upload directory path.
@@ -32,10 +32,10 @@ class Module extends \yii\base\Module
      */
     public $maxImageHeight = 1080;
     /**
-     * User role to manage files.
+     * User role or permission name to manage files.
      * @var string
      */
-    public $managerRoles = [ 'admin' ];
+    public $managerRoles = [ 'admin', 'administrator' ];
 
     public function init()
     {
@@ -55,5 +55,28 @@ class Module extends \yii\base\Module
                 self::TRANSLATION_NAME => 'base.php',
             ],
         ];
+    }
+
+    /**
+     * Return module configuration or module instance. To get module settings in models without module initialization.
+     * @return self
+     */
+    public static function findInstance()
+    {
+        $className = self::className();
+        foreach ( Yii::$app->modules as $moduleId => $module ) {
+            if ( is_object($module) ) {
+                if ( $module::className() == $className ) {
+                    return $module;
+                }
+            } elseif ( is_array($module) ) {
+                if ( $module['class'] == $className ) {
+                    return Yii::$app->getModule($moduleId);
+                }
+            } elseif ( $module == $className ) {
+                return Yii::$app->getModule($moduleId);
+            }
+        }
+        return null;
     }
 }

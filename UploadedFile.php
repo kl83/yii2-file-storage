@@ -1,5 +1,5 @@
 <?php
-namespace kl83\modules\filestorage;
+namespace kl83\filestorage;
 
 class UploadedFile extends \yii\web\UploadedFile
 {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Сен 13 2017 г., 14:31
+-- Время создания: Сен 14 2017 г., 08:59
 -- Версия сервера: 5.7.19-log
 -- Версия PHP: 7.1.9
 
@@ -28,8 +28,7 @@ CREATE TABLE `kl83_file` (
   `fileSetId` int(11) UNSIGNED NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdBy` int(11) UNSIGNED NOT NULL,
-  `path` varchar(2500) NOT NULL,
-  `url` varchar(2500) NOT NULL
+  `relPath` varchar(2500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -69,11 +68,11 @@ ALTER TABLE `kl83_file_set`
 -- AUTO_INCREMENT для таблицы `kl83_file`
 --
 ALTER TABLE `kl83_file`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `kl83_file_set`
 --
 ALTER TABLE `kl83_file_set`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;

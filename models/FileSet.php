@@ -1,5 +1,5 @@
 <?php
-namespace kl83\modules\filestorage\models;
+namespace kl83\filestorage\models;
 
 use Yii;
 
@@ -8,7 +8,7 @@ use Yii;
  * @property integer $id
  * @property integer $createdAt
  * @property integer $createdBy
- * @property kl83\modules\filestorage\models\File[] $files
+ * @property kl83\filestorage\models\File[] $files
  */
 class FileSet extends \yii\db\ActiveRecord
 {

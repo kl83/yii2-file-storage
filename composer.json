@@ -22,9 +22,6 @@
         "facebook/webdriver": "^1.0.1"
     },
     "autoload": {
-        "psr-4": {
-            "kl83\\modules\\filestorage\\": "module/",
-            "kl83\\widgets\\": "widgets/"
-        }
+        "psr-4": { "kl83\\filestorage\\": "" }
     }
 }

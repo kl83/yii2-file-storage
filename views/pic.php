@@ -1,10 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use kl83\modules\filestorage\models\File;
+use kl83\filestorage\models\File;
 
 /* @var $this \yii\web\View */
-/* @var $widget \kl83\widgets\PicSetWidget */
+/* @var $widget \kl83\filestorage\PicSetWidget */
 /* @var $hasModel boolean */
 /* @var $value integer */
 
