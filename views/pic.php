@@ -1,16 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use kl83\filestorage\models\File;
 
 /* @var $this \yii\web\View */
 /* @var $widget \kl83\filestorage\PicSetWidget */
 /* @var $hasModel boolean */
 /* @var $value integer */
-
-if ( $value ) {
-    $file = File::findOne($value);
-}
+/* @var $file \kl83\filestorage\models\File */
 
 ?>
 

@@ -1,9 +1,9 @@
 <?php
 namespace kl83\filestorage;
 
-use Yii;
 use yii\helpers\Url;
 use yii\helpers\Json;
+use kl83\filestorage\models\File;
 
 class PicWidget extends \yii\widgets\InputWidget
 {
@@ -31,8 +31,11 @@ class PicWidget extends \yii\widgets\InputWidget
     public function run()
     {
         $value = $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
-        if ( $value ) {
-            $this->wrapperOptions['class'] .= " show-picture";
+        if ( $value  ) {
+            $file = File::findOne($value);
+            if ( $file ) {
+                $this->wrapperOptions['class'] .= " show-picture";
+            }
         }
         $params = [
             'uploadUrl' => Url::to(["{$this->filestorageModule->id}/default/upload"]),
@@ -43,6 +46,7 @@ class PicWidget extends \yii\widgets\InputWidget
             'widget' => $this,
             'hasModel' => $this->hasModel(),
             'value' => $value,
+            'file' => isset($file) ? $file : null,
         ]);
     }
 }

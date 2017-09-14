@@ -20,7 +20,7 @@ var kl83RegisterPicWidget = function(elId, params){
                 deletePicture(valueInput.val());
             }
             form.ajaxSubmit({
-                url: params.uploadUrl+'?attributes='+fileInputName,
+                url: params.uploadUrl+(/\?/.test(params.uploadUrl)?'&':'?')+'attributes='+fileInputName,
                 type: 'post',
                 success: function(data){
                     valueInput.val(data[fileInputName].id);
