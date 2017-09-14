@@ -31,7 +31,7 @@ if ( $value ) {
     <label
         class="picture"
         for="<?= "$widget->id-file" ?>"
-        style="background-image: <?= $file ? "url('$file->url')" : 'none' ?>"
+        style="background-image: <?= $value && $file ? "url('$file->url')" : 'none' ?>"
         ></label>
     <label class="upload" for="<?= "$widget->id-file" ?>">
         <span class="glyphicon glyphicon-picture"></span>
