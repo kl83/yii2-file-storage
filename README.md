@@ -18,6 +18,11 @@ or add
 ~~~
 to the require section of your composer.json file.
 
+And apply migrations.
+~~~
+./yii migrate --migrationPath=@vendor/kl83/yii2-file-storage/migrations
+~~~
+
 ## Module configuration
 config/web.php
 ~~~
