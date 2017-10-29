@@ -39,6 +39,7 @@ class Module extends \yii\base\Module
 
     public function init()
     {
+        Yii::setAlias('@kl83', '@vendor/kl83');
         parent::init();
         self::registerTranslations();
         $this->uploadDir = Yii::getAlias($this->uploadDir);
