@@ -212,7 +212,7 @@ class DefaultController extends \yii\web\Controller
         $files = $this->saveFiles($uploadedFiles, $fileSet->id);
         $html = [];
         foreach ( $files as $attribute => $file ) {
-            $html[$attribute] = $this->renderPartial('../../views/picset/_item.php', [
+            $html[$attribute] = $this->renderPartial('@kl83/yii2-file-storage/views/picset/_item.php', [
                 'file' => $file,
                 'animate' => true,
             ]);
