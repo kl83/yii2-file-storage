@@ -35,7 +35,6 @@ class FileSet extends \yii\db\ActiveRecord
      */
     public function getFiles()
     {
-        return $this->hasMany(File::className(), [ 'fileSetId' => 'id' ])
-            ->orderBy('idx, id');
+        return $this->hasMany(File::className(), [ 'fileSetId' => 'id' ]);
     }
 }
