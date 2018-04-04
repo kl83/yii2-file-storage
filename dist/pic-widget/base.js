@@ -23,7 +23,7 @@ var kl83RegisterPicWidget = function(elId, params){
                 url: params.uploadUrl+(/\?/.test(params.uploadUrl)?'&':'?')+'attributes='+fileInputName,
                 type: 'post',
                 success: function(data){
-                    valueInput.val(data[fileInputName].id);
+                    valueInput.val(data[fileInputName].id).change();
                     pictureEl.css('backgroundImage', "url('"+data[fileInputName].url)+"')";
                     rootEl.addClass('show-picture');
                     fileInput.val('');
