@@ -51,6 +51,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
                     }, limitReached() ? 400 : 50);
                     fileInput.val('');
                     rootEl.removeClass('progress-enabled');
+                    rootEl.find('.progress-bar').width(0);
                 },
                 uploadProgress: function (e, position, total, percent) {
                     rootEl.find('.progress-bar').width(percent + '%');
