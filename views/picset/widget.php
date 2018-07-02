@@ -44,4 +44,10 @@ $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: 
 
     </div>
 
+    <div class="progress-bar-container">
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
 <?= Html::endTag('div') ?>

@@ -1,3 +1,6 @@
+.kl83-picset-widget {
+  position: relative;
+}
 .kl83-picset-widget input[type='file'] {
   display: none;
 }
@@ -70,5 +73,26 @@
 }
 .kl83-picset-widget .new-item:hover span {
   color: #333;
+}
+.kl83-picset-widget .progress-bar-container {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  right: 0;
+  bottom: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+.kl83-picset-widget .progress {
+  position: absolute;
+  left: 20px;
+  top: calc(50% - 10px);
+  right: 20px;
+}
+.kl83-picset-widget.progress-enabled .progress-bar-container {
+  opacity: 1;
+  visibility: visible;
 }
 /*# sourceMappingURL=base.css.map */

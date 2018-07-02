@@ -17,7 +17,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
         var limitReached = function(){
             return params.maxImages !== false && rootEl.find('.items div.item').length >= params.maxImages;
         };
-        
+
         var checkLimit = function(){
             if ( limitReached() ) {
                 rootEl.find('.items .new-item').fadeOut();
@@ -25,7 +25,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
                 rootEl.find('.items .new-item').fadeIn();
             }
         };
-        
+
         // Enable sorting
         rootEl.find('.sortable').sortable({
             stop: function ( e, ui ) {
@@ -33,9 +33,10 @@ var kl83RegisterPicSetWidget = function(elId, params){
                 $.get(params.moveUrl, { id: ui.item.data('id'), afterId: afterId });
             }
         });
-        
+
         // Upload selected file
         fileInput.change(function(){
+            rootEl.addClass('progress-enabled');
             form.ajaxSubmit({
                 url: params.uploadUrl+(/\?/.test(params.uploadUrl)?'&':'?')+'fileSetId='+fileSetInput.val()+'&attributes='+fileInputName,
                 type: 'post',
@@ -49,6 +50,10 @@ var kl83RegisterPicSetWidget = function(elId, params){
                         rootEl.find('.item.animation').removeClass('animation');
                     }, limitReached() ? 400 : 50);
                     fileInput.val('');
+                    rootEl.removeClass('progress-enabled');
+                },
+                uploadProgress: function (e, position, total, percent) {
+                    rootEl.find('.progress-bar').width(percent + '%');
                 }
             });
         });
@@ -64,7 +69,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
                 }, 400);
             });
         });
-        
+
         checkLimit();
     });
 };
