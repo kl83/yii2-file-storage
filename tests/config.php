@@ -12,8 +12,8 @@ $config = [
         'db' => [
             'class' => '\yii\db\Connection',
             'dsn' => 'mysql:host=127.0.0.1;dbname=filestorage',
-            'username' => 'root',
-            'password' => 'root',
+            'username' => 'filestorage',
+            'password' => 'fugvrbfuIIQhtwis',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -22,6 +22,9 @@ $config = [
         'request' => [
             'enableCookieValidation' => false,
             'enableCsrfValidation' => false,
+        ],
+        'assetManager' => [
+            'linkAssets' => true,
         ],
     ],
     'modules' => [
