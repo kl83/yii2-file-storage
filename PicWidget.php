@@ -1,47 +1,58 @@
 <?php
+
 namespace kl83\filestorage;
 
 use yii\helpers\Url;
 use yii\helpers\Json;
 use kl83\filestorage\models\File;
 
+/**
+ * Widget to upload one file.
+ */
 class PicWidget extends \yii\widgets\InputWidget
 {
     /**
-     * Wrapper DOM element html-attributes
-     * @var array
+     * @var array Wrapper DOM element html-attributes.
      */
     public $wrapperOptions = [
         'class' => 'kl83-pic-widget',
     ];
+
     /**
-     * Filestorage module instance
-     * @var \kl83\filestorage\Module
+     * @var \kl83\filestorage\Module Filestorage module instance.
      */
     private $filestorageModule;
 
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         parent::init();
         $this->filestorageModule = Module::findInstance();
-        $this->wrapperOptions['id'] = "$this->id-wrapper";
+        $this->wrapperOptions['id'] = $this->id . '-wrapper';
         PicAsset::register($this->view);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function run()
     {
         $value = $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
-        if ( $value  ) {
+        if ($value) {
             $file = File::findOne($value);
-            if ( $file ) {
+            if ($file) {
                 $this->wrapperOptions['class'] .= " show-picture";
             }
         }
         $params = [
-            'uploadUrl' => Url::to(["{$this->filestorageModule->id}/default/upload"]),
-            'removeUrl' => Url::to(["{$this->filestorageModule->id}/default/delete-file"]),
+            'uploadUrl' => Url::to([$this->filestorageModule->id . '/default/upload']),
+            'removeUrl' => Url::to([$this->filestorageModule->id . '/default/delete-file']),
         ];
-        $this->view->registerJs("kl83RegisterPicWidget('{$this->wrapperOptions['id']}', ".Json::encode($params).");");
+        $this->view->registerJs(
+            'kl83RegisterPicWidget("' . $this->wrapperOptions['id'] . '", ' . Json::encode($params) . ');'
+        );
         return $this->render('pic', [
             'widget' => $this,
             'hasModel' => $this->hasModel(),

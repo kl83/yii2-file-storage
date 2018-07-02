@@ -9,16 +9,19 @@ use kl83\filestorage\models\File;
 use kl83\filestorage\models\FileSet;
 
 /**
- *
+ * File manager.
  */
 class DefaultController extends \yii\web\Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => '\yii\filters\AccessControl',
-                'except' => [ 'upload' ],
+                'except' => ['upload'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -26,22 +29,22 @@ class DefaultController extends \yii\web\Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => [ 'delete-file', 'move' ],
-                        'matchCallback' => function(){
+                        'actions' => ['delete-file', 'move'],
+                        'matchCallback' => function () {
                             $model = $this->findFile(Yii::$app->request->get('id'));
-                            return ! $model->createdBy || $model->createdBy == Yii::$app->user->id;
+                            return !$model->createdBy || $model->createdBy == Yii::$app->user->id;
                         },
                     ],
                     [
                         'allow' => true,
-                        'actions' => [ 'upload-to-file-set', 'upload-pic-set-item' ],
-                        'matchCallback' => function(){
+                        'actions' => ['upload-to-file-set', 'upload-pic-set-item'],
+                        'matchCallback' => function () {
                             $id = Yii::$app->request->get('fileSetId');
-                            if ( ! $id ) {
+                            if (!$id) {
                                 return true;
                             } else {
                                 $model = FileSet::findOne($id);
-                                return ! $model->createdBy || $model->createdBy == Yii::$app->user->id;
+                                return !$model->createdBy || $model->createdBy == Yii::$app->user->id;
                             }
                         },
                     ],
@@ -58,16 +61,16 @@ class DefaultController extends \yii\web\Controller
      */
     private function getUploadedFileInstances($attributes)
     {
-        if ( ! $attributes ) {
+        if (!$attributes) {
             $attributes = array_keys($_FILES);
-        } elseif ( is_string($attributes) ) {
-            $attributes = [ $attributes ] ;
-        } elseif ( ! is_array($attributes) ) {
+        } elseif (is_string($attributes)) {
+            $attributes = [$attributes] ;
+        } elseif (!is_array($attributes)) {
             throw new BadRequestHttpException;
         }
         $result = [];
         $uploadedFileClassName = YII_ENV != 'test' ? '\yii\web\UploadedFile' : '\kl83\filestorage\UploadedFile';
-        foreach ( $attributes as $attribute ) {
+        foreach ($attributes as $attribute) {
             $result[$attribute] = $uploadedFileClassName::getInstanceByName($attribute);
         }
         return $result;
@@ -98,7 +101,7 @@ class DefaultController extends \yii\web\Controller
     private function saveFiles($uploadedFiles, $fileSetId = null)
     {
         $files = [];
-        foreach ( $uploadedFiles as $attribute => $uploadedFile ) {
+        foreach ($uploadedFiles as $attribute => $uploadedFile) {
             $files[$attribute] = $this->saveFile($uploadedFile, $fileSetId);
         }
         return $files;
@@ -112,13 +115,13 @@ class DefaultController extends \yii\web\Controller
      */
     private function findFileSet($id)
     {
-        if ( ! $id ) {
+        if (!$id) {
             $model = new FileSet;
             $model->save();
             return $model;
         } else {
             $model = FileSet::findOne($id);
-            if ( $model ) {
+            if ($model) {
                 return $model;
             } else {
                 throw new NotFoundHttpException(Yii::t(Module::TRANSLATION_NAME, 'File set #{id} not found!', [
@@ -137,7 +140,7 @@ class DefaultController extends \yii\web\Controller
     private function findFile($id)
     {
         $model = File::findOne($id);
-        if ( $model ) {
+        if ($model) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t(Module::TRANSLATION_NAME, 'File #{id} not found!', [
@@ -154,8 +157,8 @@ class DefaultController extends \yii\web\Controller
     private function filesToJsonData($files)
     {
         $result = [];
-        foreach ( $files as $attribute => $file ) {
-            if ( $file->id ) {
+        foreach ($files as $attribute => $file) {
+            if ($file->id) {
                 $result[$attribute] = [
                     'id' => $file->id,
                     'url' => $file->url,
@@ -211,7 +214,7 @@ class DefaultController extends \yii\web\Controller
         $uploadedFiles = $this->getUploadedFileInstances($attributes);
         $files = $this->saveFiles($uploadedFiles, $fileSet->id);
         $html = [];
-        foreach ( $files as $attribute => $file ) {
+        foreach ($files as $attribute => $file) {
             $html[$attribute] = $this->renderPartial('@vendor/kl83/yii2-file-storage/views/picset/_item.php', [
                 'file' => $file,
                 'animate' => true,

@@ -1,6 +1,9 @@
 <?php
 namespace kl83\filestorage;
 
+/**
+ * {@inheritdoc}
+ */
 class UploadedFile extends \yii\web\UploadedFile
 {
     /**

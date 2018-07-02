@@ -2,24 +2,24 @@
 
 use yii\helpers\Html;
 
-/* @var $this \yii\web\View */
-/* @var $widget \kl83\filestorage\PicSetWidget */
+/* @var $this yii\web\View */
+/* @var $widget kl83\filestorage\PicSetWidget */
 /* @var $hasModel boolean */
 /* @var $value integer */
-/* @var $file \kl83\filestorage\models\File */
+/* @var $file kl83\filestorage\models\File */
 
 ?>
 
 <?= Html::beginTag('div', $widget->wrapperOptions) ?>
 
-    <?php if ( $hasModel ) : ?>
+    <?php if ($hasModel) : ?>
         <?= Html::activeHiddenInput($widget->model, $widget->attribute) ?>
     <?php else : ?>
         <?= Html::hiddenInput($widget->name, $value) ?>
     <?php endif; ?>
 
-    <?= Html::fileInput("$widget->id-file", null, [
-        'id' => "$widget->id-file",
+    <?= Html::fileInput($widget->id . '-file', null, [
+        'id' => $widget->id . '-file',
         'accept' => 'image/*',
     ]) ?>
 

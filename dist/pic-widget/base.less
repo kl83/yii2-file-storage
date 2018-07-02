@@ -1,10 +1,4 @@
 .kl83-pic-widget {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    border-radius: 3px;
-    background: white;
-    box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
     input[type='file'] {
         display: none;
     }
@@ -12,6 +6,11 @@
         margin: 0;
     }
     .remove {
+        .glyphicon {
+            font-size: 18px;
+            color: #333;
+            margin: 1px 0 0 2px;
+        }
         position: absolute;
         z-index: 10;
         width: 0;
@@ -27,11 +26,6 @@
             opacity 0.2s,
             width 0s 0.2s,
             height 0s 0.2s;
-        .glyphicon {
-            font-size: 18px;
-            color: #333;
-            margin: 1px 0 0 2px;
-        }
     }
     .picture {
         position: absolute;
@@ -47,6 +41,16 @@
         transition: 0.2s;
     }
     .upload {
+        span {
+            font-size: 40px;
+            color: #777;
+            transition: 0.4s;
+        }
+        &:hover {
+            span {
+                color: #333;
+            }
+        }
         display: flex;
         position: absolute;
         left: 0;
@@ -58,16 +62,6 @@
         cursor: pointer;
         opacity: 1;
         transition: 0.2s 0.2s;
-        span {
-            font-size: 40px;
-            color: #777;
-            transition: 0.4s;
-        }
-        &:hover {
-            span {
-                color: #333;
-            }
-        }
     }
     &.show-picture {
         .remove {
@@ -88,4 +82,10 @@
             transition: 0.2s;
         }
     }
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 3px;
+    background: white;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
 }

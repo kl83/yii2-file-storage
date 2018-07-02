@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 
-/* @var $this \yii\web\View */
-/* @var $widget \kl83\filestorage\PicSetWidget */
+/* @var $this yii\web\View */
+/* @var $widget kl83\filestorage\PicSetWidget */
+/* @var $fileSet kl83\filestorage\models\FileSet */
 /* @var $hasModel boolean */
-/* @var $fileSet \kl83\filestorage\models\FileSet */
 
 $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: none' : '';
 
@@ -13,21 +13,21 @@ $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: 
 
 <?= Html::beginTag('div', $widget->wrapperOptions) ?>
 
-    <?php if ( $hasModel ) : ?>
+    <?php if ($hasModel) : ?>
         <?= Html::activeHiddenInput($widget->model, $widget->attribute) ?>
     <?php else : ?>
         <?= Html::hiddenInput($widget->name, $fileSet->id) ?>
     <?php endif; ?>
 
-    <?= Html::fileInput("$widget->id-file", null, [
-        'id' => "$widget->id-file",
+    <?= Html::fileInput($widget->id . '-file', null, [
+        'id' => $widget->id . '-file',
         'accept' => 'image/*',
     ]) ?>
 
     <div class="items">
 
         <div class="sortable">
-            <?php foreach ( $fileSet->files as $file ) : ?>
+            <?php foreach ($fileSet->files as $file) : ?>
                 <?= $this->render('_item', [
                     'file' => $file,
                     'animate' => false,
