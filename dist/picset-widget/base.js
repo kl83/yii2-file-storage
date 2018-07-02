@@ -4,7 +4,7 @@ var kl83RegisterPicSetWidget = function(elId, params){
     var form = rootEl.closest('form');
     var fileInput = rootEl.find('input[type="file"]');
     var fileSetInput = rootEl.find('input[type="hidden"]');
-    var fileInputName = fileInput.attr('name');
+    var fileInputName = fileInput.attr('name').replace(/\[\]$/, '');
     var sortable = rootEl.find('.sortable');
     
     jQuery(function($){

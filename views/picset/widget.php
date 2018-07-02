@@ -19,9 +19,10 @@ $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: 
         <?= Html::hiddenInput($widget->name, $fileSet->id) ?>
     <?php endif; ?>
 
-    <?= Html::fileInput($widget->id . '-file', null, [
+    <?= Html::fileInput($widget->id . '-file[]', null, [
         'id' => $widget->id . '-file',
         'accept' => 'image/*',
+        'multiple' => true,
     ]) ?>
 
     <div class="items">

@@ -71,7 +71,7 @@ class DefaultController extends \yii\web\Controller
         $result = [];
         $uploadedFileClassName = YII_ENV != 'test' ? '\yii\web\UploadedFile' : '\kl83\filestorage\UploadedFile';
         foreach ($attributes as $attribute) {
-            $result[$attribute] = $uploadedFileClassName::getInstanceByName($attribute);
+            $result[$attribute] = $uploadedFileClassName::getInstancesByName($attribute);
         }
         return $result;
     }
@@ -102,7 +102,13 @@ class DefaultController extends \yii\web\Controller
     {
         $files = [];
         foreach ($uploadedFiles as $attribute => $uploadedFile) {
-            $files[$attribute] = $this->saveFile($uploadedFile, $fileSetId);
+            if (is_array($uploadedFile)) {
+                for ($i = 0; $i < count($uploadedFile); $i++) {
+                    $files[$attribute][] = $this->saveFile($uploadedFile[$i], $fileSetId);
+                }
+            } else {
+                $files[$attribute] = $this->saveFile($uploadedFile, $fileSetId);
+            }
         }
         return $files;
     }
@@ -158,6 +164,9 @@ class DefaultController extends \yii\web\Controller
     {
         $result = [];
         foreach ($files as $attribute => $file) {
+            if (is_array($file) && count($file) == 1) {
+                $file = current($file);
+            }
             if ($file->id) {
                 $result[$attribute] = [
                     'id' => $file->id,
@@ -215,10 +224,20 @@ class DefaultController extends \yii\web\Controller
         $files = $this->saveFiles($uploadedFiles, $fileSet->id);
         $html = [];
         foreach ($files as $attribute => $file) {
-            $html[$attribute] = $this->renderPartial('@vendor/kl83/yii2-file-storage/views/picset/_item.php', [
-                'file' => $file,
-                'animate' => true,
-            ]);
+            if (is_array($file)) {
+                $html[$attribute] = '';
+                for ($i = 0; $i < count($file); $i++) {
+                    $html[$attribute] .= $this->renderPartial('/picset/_item.php', [
+                        'file' => $file[$i],
+                        'animate' => true,
+                    ]);
+                }
+            } else {
+                $html[$attribute] = $this->renderPartial('/picset/_item.php', [
+                    'file' => $file,
+                    'animate' => true,
+                ]);
+            }
         }
         return $this->asJson([
             'fileSetId' => $fileSet->id,
