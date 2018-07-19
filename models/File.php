@@ -51,6 +51,30 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
+     * If the file is a image then minimizes his size by decreasing quality to 60.
+     */
+    private function minimizeImage()
+    {
+        try {
+            $img = Image::getImagine()->open($this->path);
+        } catch (\Exception $e) {
+            return;
+        }
+        $box = $img->getSize();
+        if (
+            $box->getWidth() > $this->moduleInstance->maxImageWidth ||
+            $box->getHeight() > $this->moduleInstance->maxImageHeight
+        ) {
+            $box = $box->widen($this->moduleInstance->maxImageWidth);
+            if ($box->getHeight() > $this->moduleInstance->maxImageHeight) {
+                $box = $box->heighten($this->moduleInstance->maxImageHeight);
+            }
+            $img->resize($box);
+        }
+        $img->save(null, ['quality' => 60]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function init()
@@ -59,27 +83,19 @@ class File extends \yii\db\ActiveRecord
         $this->on(self::EVENT_BEFORE_INSERT, function () {
             $this->createdBy = (int)Yii::$app->user->id;
         });
-        $this->on(self::EVENT_AFTER_INSERT, function () {
-            try {
-                $img = Image::getImagine()->open($this->path);
-                $box = $img->getSize();
-                if (
-                    $box->getWidth() > $this->moduleInstance->maxImageWidth ||
-                    $box->getHeight() > $this->moduleInstance->maxImageHeight
-                ) {
-                    $box = $box->widen($this->moduleInstance->maxImageWidth);
-                    if ($box->getHeight() > $this->moduleInstance->maxImageHeight) {
-                        $box = $box->heighten($this->moduleInstance->maxImageHeight);
-                    }
-                    $img->resize($box)->save();
-                }
-            } catch (\Exception $e) {
-            }
-        });
         $this->on(self::EVENT_BEFORE_DELETE, function () {
             @unlink($this->path);
         });
         parent::init();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->minimizeImage();
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
