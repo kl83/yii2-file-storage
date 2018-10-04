@@ -1,14 +1,14 @@
 var kl83RegisterPicSetWidget = function(elId, params){
-    
+
     var rootEl = $('#'+elId);
     var form = rootEl.closest('form');
     var fileInput = rootEl.find('input[type="file"]');
     var fileSetInput = rootEl.find('input[type="hidden"]');
     var fileInputName = fileInput.attr('name').replace(/\[\]$/, '');
     var sortable = rootEl.find('.sortable');
-    
+
     jQuery(function($){
-        
+
         /**
          * Check limit loaded images.
          * Returns false if limit is reached, true if not

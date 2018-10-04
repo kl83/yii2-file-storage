@@ -1,5 +1,5 @@
 var kl83RegisterPicWidget = function(elId, params){
-    
+
     var rootEl = $('#'+elId);
     var form = rootEl.closest('form');
     var valueInput = rootEl.find('input[type="hidden"]');
@@ -9,11 +9,11 @@ var kl83RegisterPicWidget = function(elId, params){
     var removeEl = rootEl.find('.remove');
 
     jQuery(function($){
-        
+
         var deletePicture = function(id, cb){
             $.get(params.removeUrl, { id: id }, cb);
         };
-        
+
         // Upload selected file
         fileInput.change(function(){
             if ( rootEl.hasClass('show-picture') ) {
