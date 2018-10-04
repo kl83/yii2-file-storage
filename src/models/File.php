@@ -1,4 +1,5 @@
 <?php
+
 namespace kl83\filestorage\models;
 
 use Yii;
@@ -20,12 +21,12 @@ use kl83\filestorage\Module;
 class File extends \yii\db\ActiveRecord
 {
     /**
-     * @var \yii\web\UploadedFile Uploaded file.
+     * @var \yii\web\UploadedFile Uploaded file
      */
     public $uploadedFile;
 
     /**
-     * @var kl83\filestorage\Module Module instance.
+     * @var kl83\filestorage\Module Module instance
      */
     private $moduleInstance;
 

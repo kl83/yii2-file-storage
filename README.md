@@ -89,7 +89,7 @@ Uploads files and stores his in specified fileset.
 ## PicWidget usage
 Widget to select and upload some one image.
 ~~~
-$form->field($model, 'picId')->widget('kl83\filestorage\PicWidget');
+$form->field($model, 'picId')->widget('kl83\filestorage\widgets\PicWidget');
 ~~~
 picId must be integer attribute
 ### Example model methods to get uploaded file
@@ -107,7 +107,7 @@ public function getPicUrl()
 ## PicSetWidget usage
 Widget to select and upload some images.
 ~~~
-$form->field($model, 'picSetId')->widget('kl83\filestorage\PicSetWidget', [
+$form->field($model, 'picSetId')->widget('kl83\filestorage\widgets\PicSetWidget', [
     'maxImages' => 3, // default is unlimited
 ]);
 ~~~

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $widget kl83\filestorage\PicSetWidget */
+/* @var $widget kl83\filestorage\widgets\PicSetWidget */
 /* @var $hasModel boolean */
 /* @var $value integer */
 /* @var $file kl83\filestorage\models\File */

@@ -1,6 +1,8 @@
 <?php
+
 namespace kl83\filestorage\controllers;
 
+use kl83\filestorage\models\UploadsIterator;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -9,18 +11,15 @@ use kl83\filestorage\models\File;
 use kl83\filestorage\models\FileSet;
 
 /**
- * File manager.
+ * File operations.
  */
 class DefaultController extends \yii\web\Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
             'access' => [
-                'class' => '\yii\filters\AccessControl',
+                'class' => 'yii\filters\AccessControl',
                 'except' => ['upload'],
                 'rules' => [
                     [
@@ -61,19 +60,19 @@ class DefaultController extends \yii\web\Controller
      */
     private function getUploadedFileInstances($attributes)
     {
-        if (!$attributes) {
-            $attributes = array_keys($_FILES);
-        } elseif (is_string($attributes)) {
-            $attributes = [$attributes] ;
-        } elseif (!is_array($attributes)) {
-            throw new BadRequestHttpException;
-        }
-        $result = [];
-        $uploadedFileClassName = YII_ENV != 'test' ? '\yii\web\UploadedFile' : '\kl83\filestorage\UploadedFile';
-        foreach ($attributes as $attribute) {
-            $result[$attribute] = $uploadedFileClassName::getInstancesByName($attribute);
-        }
-        return $result;
+        return new UploadsIterator($attributes);
+//        if (!$attributes) {
+//            $attributes = array_keys($_FILES);
+//        } elseif (is_string($attributes)) {
+//            $attributes = [$attributes] ;
+//        } elseif (!is_array($attributes)) {
+//            throw new BadRequestHttpException;
+//        }
+//        $result = [];
+//        foreach ($attributes as $attribute) {
+//            $result[$attribute] = \yii\web\UploadedFile::getInstancesByName($attribute);
+//        }
+//        return $result;
     }
 
     /**
@@ -184,12 +183,13 @@ class DefaultController extends \yii\web\Controller
 
     /**
      * Saves files and return their attributes as json data.
-     * @param string[] $attributes
-     * @return string
+     * @param string[]|string|null $attributes
+     * @return \yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionUpload($attributes = null)
     {
-        $uploadedFiles = $this->getUploadedFileInstances($attributes);
+        $uploadedFiles = new UploadsIterator($attributes);
         $files = $this->saveFiles($uploadedFiles);
         return $this->asJson($this->filesToJsonData($files));
     }
@@ -227,13 +227,13 @@ class DefaultController extends \yii\web\Controller
             if (is_array($file)) {
                 $html[$attribute] = '';
                 for ($i = 0; $i < count($file); $i++) {
-                    $html[$attribute] .= $this->renderPartial('/picset/_item.php', [
+                    $html[$attribute] .= $this->renderPartial('@vendor/kl83/yii2-file-storage/src/widgets/views/picset/_item.php', [
                         'file' => $file[$i],
                         'animate' => true,
                     ]);
                 }
             } else {
-                $html[$attribute] = $this->renderPartial('/picset/_item.php', [
+                $html[$attribute] = $this->renderPartial('@vendor/kl83/yii2-file-storage/src/widgets/views/picset/_item.php', [
                     'file' => $file,
                     'animate' => true,
                 ]);

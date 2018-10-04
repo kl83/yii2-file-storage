@@ -1,9 +1,10 @@
 <?php
 
-namespace kl83\filestorage;
+namespace kl83\filestorage\widgets;
 
 use yii\helpers\Url;
 use yii\helpers\Json;
+use kl83\filestorage\Module;
 use kl83\filestorage\models\File;
 
 /**
@@ -31,7 +32,7 @@ class PicWidget extends \yii\widgets\InputWidget
         parent::init();
         $this->filestorageModule = Module::findInstance();
         $this->wrapperOptions['id'] = $this->id . '-wrapper';
-        PicAsset::register($this->view);
+        PicWidgetAsset::register($this->view);
     }
 
     /**
