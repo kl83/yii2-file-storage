@@ -3,18 +3,17 @@
 namespace kl83\filestorage\controllers;
 
 use Yii;
+use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use kl83\filestorage\Module;
 use kl83\filestorage\models\File;
 use kl83\filestorage\models\FileSet;
 use kl83\filestorage\models\UploadsHandler;
 use kl83\filestorage\models\UploadsIterator;
 use kl83\filestorage\models\UploadsResponse;
 
-/**
- * File operations.
- */
-class DefaultController extends \yii\web\Controller
+class DefaultController extends Controller
 {
     /**
      * Saves files and return their attributes as json data
@@ -23,16 +22,14 @@ class DefaultController extends \yii\web\Controller
      * If is null then all files will be saved
      * @param int|null $filesetId
      * If is null then File will be created without FileSet
-     * If is 0 then new FileSet will be created
-     * If is numeric and greater than 0 then files will be added to specified FileSet
+     * If is -1 then new FileSet will be created
+     * If is numeric then files will be added to specified FileSet
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      * @throws ForbiddenHttpException
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionUpload($attributes = null, $filesetId = null)
     {
-        Yii::info($filesetId);
         $uploadedFiles = new UploadsIterator($attributes);
         $handler = new UploadsHandler([
             'uploadedFiles' => $uploadedFiles,
@@ -43,7 +40,7 @@ class DefaultController extends \yii\web\Controller
     }
 
     /**
-     * Change file order in fileset.
+     * Changes the order of files in a fileset
      * @param integer $id
      * @param integer $afterId
      * @throws ForbiddenHttpException
@@ -55,7 +52,7 @@ class DefaultController extends \yii\web\Controller
     }
 
     /**
-     * Deletes the file.
+     * Deletes the file
      * @param integer $id
      * @throws NotFoundHttpException
      * @throws \Throwable
@@ -78,7 +75,10 @@ class DefaultController extends \yii\web\Controller
         if (!$model) {
             throw new NotFoundHttpException();
         }
-        if ($model->createdById && $model->createdById != Yii::$app->user->id) {
+        if (
+            Yii::$app->user->can(Module::getInstance()->managerRoles) ||
+            $model->createdById && $model->createdById != Yii::$app->user->id
+        ) {
             throw new ForbiddenHttpException();
         }
         return $model;
@@ -96,7 +96,10 @@ class DefaultController extends \yii\web\Controller
         if (!$model) {
             throw new NotFoundHttpException();
         }
-        if ($model->createdById && $model->createdById != Yii::$app->user->id) {
+        if (
+            Yii::$app->user->can(Module::getInstance()->managerRoles) ||
+            $model->createdById && $model->createdById != Yii::$app->user->id
+        ) {
             throw new ForbiddenHttpException();
         }
         return $model;

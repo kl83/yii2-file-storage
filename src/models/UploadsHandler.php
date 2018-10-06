@@ -11,7 +11,7 @@ use yii\web\UploadedFile;
  */
 class UploadsHandler extends BaseObject
 {
-    const CREATE_NEW_FILESET = 0;
+    const CREATE_NEW_FILESET = -1;
 
     /**
      * @var UploadsIterator
@@ -20,7 +20,7 @@ class UploadsHandler extends BaseObject
 
     /**
      * @var int|FileSet|null
-     * If is 0 then new FileSet will be created
+     * If is self::CREATE_NEW_FILESET then new FileSet will be created
      */
     public $fileset;
 
@@ -31,12 +31,14 @@ class UploadsHandler extends BaseObject
 
     public function init()
     {
-        if ($this->fileset == self::CREATE_NEW_FILESET && $this->fileset !== null) {
-            $this->fileset = new FileSet([
-                'createdById' => Yii::$app->user->id,
-            ]);
-        } elseif (is_numeric($this->fileset)) {
-            $this->fileset = FileSet::findOne($this->fileset);
+        if (is_numeric($this->fileset)) {
+            if ($this->fileset == self::CREATE_NEW_FILESET) {
+                $this->fileset = new FileSet([
+                    'createdById' => Yii::$app->user->id,
+                ]);
+            } else {
+                $this->fileset = FileSet::findOne($this->fileset);
+            }
         }
     }
 
@@ -65,7 +67,6 @@ class UploadsHandler extends BaseObject
 
     public function saveFiles()
     {
-        Yii::info($this->fileset);
         if ($this->fileset && $this->fileset->isNewRecord) {
             $this->fileset->save();
         }

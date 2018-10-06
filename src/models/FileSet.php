@@ -3,6 +3,7 @@
 namespace kl83\filestorage\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * @property integer $id
@@ -10,18 +11,23 @@ use Yii;
  * @property integer $createdById
  * @property File[] $files
  */
-class FileSet extends \yii\db\ActiveRecord
+class FileSet extends ActiveRecord
 {
     public static function tableName()
     {
-        return "{{%kl83_file_set}}";
+        return '{{%kl83_file_set}}';
     }
 
     public function rules()
     {
         return [
             ['createdById', 'integer'],
-            ['createdById', 'exist', 'targetClass' => Yii::$app->user->identityClass, 'targetAttribute' => 'id'],
+            [
+                'createdById',
+                'exist',
+                'targetClass' => Yii::$app->user->identityClass,
+                'targetAttribute' => 'id',
+            ],
         ];
     }
 

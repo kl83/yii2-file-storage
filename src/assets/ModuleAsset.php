@@ -6,6 +6,9 @@ use Yii;
 use yii\web\AssetBundle;
 use kl83\filestorage\Module;
 
+/**
+ * Module settings on client side
+ */
 class ModuleAsset extends AssetBundle
 {
     public function init()

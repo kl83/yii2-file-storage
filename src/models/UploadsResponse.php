@@ -2,12 +2,13 @@
 
 namespace kl83\filestorage\models;
 
+use Iterator;
 use yii\helpers\ArrayHelper;
 
-class UploadsResponse implements \Iterator
+class UploadsResponse implements Iterator
 {
     /**
-     * @var UploadsHandler
+     * @var array
      */
     private $data;
 

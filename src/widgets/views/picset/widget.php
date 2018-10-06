@@ -7,7 +7,8 @@ use yii\helpers\Html;
 /* @var $input string */
 /* @var $fileSet kl83\filestorage\models\FileSet */
 
-$newItemStyle = $fileSet && $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: none' : '';
+$mustache = new Mustache_Engine();
+$itemTemplate = file_get_contents(__DIR__ . '/_item.mustache');
 
 ?>
 
@@ -25,20 +26,13 @@ $newItemStyle = $fileSet && $fileSet->getFiles()->count() >= $widget->maxImages 
 
         <div class="sortable">
             <?php if ($fileSet) : ?>
-                <?php foreach ($fileSet->files as $file) : ?>
-                    <?= $this->render('_item', [
-                        'file' => $file,
-                        'animate' => false,
-                    ]) ?>
+                <?php foreach ($fileSet->getFiles()->orderBy('idx')->all() as $file) : ?>
+                    <?= $mustache->render($itemTemplate, $file) ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
 
-        <label
-                class="item new-item"
-                for="<?= $widget->id . '-file' ?>"
-                style='<?= $newItemStyle ?>'>
-        </label>
+        <label class="item new-item" for="<?= $widget->id . '-file' ?>"></label>
 
     </div>
 

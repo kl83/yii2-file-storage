@@ -26,6 +26,6 @@ use yii\helpers\Html;
         <?= $file ? 'style="background-image: url(\'' . $file->url . '\')"' : '' ?>
         ></label>
 
-    <label class="upload" for="<?= "$widget->id-file" ?>"></label>
+    <label class="upload" for="<?= $widget->id . '-file' ?>"></label>
 
 <?= Html::endTag('div') ?>

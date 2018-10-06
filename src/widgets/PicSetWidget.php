@@ -7,26 +7,32 @@ use yii\helpers\Json;
 use kl83\filestorage\models\FileSet;
 
 /**
- * Widget to upload several files grouped in a set.
+ * Widget to upload several files grouped in a fileset
  */
 class PicSetWidget extends \yii\widgets\InputWidget
 {
     /**
-     * @var array Wrapper DOM element html-attributes.
+     * @var array HTML-attributes
      */
     public $widgetOptions = [];
 
     /**
-     * @var integer|boolean Maximum possible count of images. False is
-     * unlimited count.
+     * @var integer|boolean Maximum possible count of images
+     * If false then count is unlimited
      */
     public $maxImages = false;
 
+    /**
+     * @return int
+     */
     private function getValue()
     {
         return $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
     }
 
+    /**
+     * @return FileSet|null
+     */
     private function getFileSet()
     {
         $value = $this->getValue();
@@ -39,7 +45,7 @@ class PicSetWidget extends \yii\widgets\InputWidget
     {
         PicSetWidgetAsset::register($this->view);
         if (empty($this->widgetOptions['id'])) {
-            $this->widgetOptions['id'] = self::getId();
+            $this->widgetOptions['id'] = $this->id . '-widget';
         }
         Html::addCssClass($this->widgetOptions, 'kl83-picset-widget');
         $options = [

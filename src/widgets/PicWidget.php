@@ -2,22 +2,22 @@
 
 namespace kl83\filestorage\widgets;
 
-use yii\helpers\Url;
-use yii\helpers\Json;
 use yii\helpers\Html;
-use kl83\filestorage\Module;
 use kl83\filestorage\models\File;
 
 /**
- * Widget to upload one file.
+ * Widget to upload one file
  */
 class PicWidget extends \yii\widgets\InputWidget
 {
     /**
-     * @var array Wrapper html-attributes
+     * @var array HTML-attributes
      */
     public $widgetOptions = [];
 
+    /**
+     * @return integer
+     */
     private function getValue()
     {
         return $this->hasModel()
@@ -25,6 +25,9 @@ class PicWidget extends \yii\widgets\InputWidget
             : $this->value;
     }
 
+    /**
+     * @return File|null
+     */
     private function getFile()
     {
         $value = $this->getValue();
@@ -36,15 +39,14 @@ class PicWidget extends \yii\widgets\InputWidget
     public function run()
     {
         PicWidgetAsset::register($this->view);
-        if (empty($this->widgetOptions['id'])) {
-            $this->widgetOptions['id'] = self::getId();
-        }
         Html::addCssClass($this->widgetOptions, 'kl83-pic-widget');
-        $file = $this->getFile();
+        if ($this->getValue()) {
+            Html::addCssClass($this->widgetOptions,'show-picture');
+        }
         return $this->render('pic', [
             'widget' => $this,
             'input' => $this->renderInputHtml('hidden'),
-            'file' => $file,
+            'file' => $this->getFile(),
         ]);
     }
 }

@@ -46,7 +46,10 @@ class FileBuilder
 
     public function fileset($fileset)
     {
-        $this->file->fileSetId = is_numeric($fileset) ? $fileset : $fileset->id;
+        if ($fileset) {
+            $this->file->fileSetId =
+                is_numeric($fileset) ? $fileset : $fileset->id;
+        }
         return $this;
     }
 
@@ -86,7 +89,7 @@ class FileBuilder
 
     /**
      * Generates a relative path for a new file
-     * Path is relative to the upload directory
+     * Path relative to upload directory
      * @return string
      * @throws \yii\base\Exception
      */
@@ -111,7 +114,7 @@ class FileBuilder
 
     public function __beforeInsertFile()
     {
-        $path = $this->module->uploadDir . '/' . $this->file->relPath;
+        $path = $this->file->path;
         if (!mkdir(dirname($path), 0777, true)) {
             throw new Exception();
         }

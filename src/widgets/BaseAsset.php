@@ -2,8 +2,6 @@
 
 namespace kl83\filestorage\widgets;
 
-use Yii;
-use yii\web\View;
 use yii\web\AssetBundle;
 
 abstract class BaseAsset extends AssetBundle
