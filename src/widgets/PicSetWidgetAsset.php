@@ -10,5 +10,6 @@ class PicSetWidgetAsset extends BaseAsset
         'yii\bootstrap\BootstrapAsset',
         'yii\jui\JuiAsset',
         'kl83\filestorage\assets\JqueryFormAsset',
+        'kl83\filestorage\assets\ModuleAsset',
     ];
 }

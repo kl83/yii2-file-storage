@@ -9,5 +9,6 @@ class PicWidgetAsset extends BaseAsset
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
         'kl83\filestorage\assets\JqueryFormAsset',
+        'kl83\filestorage\assets\ModuleAsset',
     ];
 }

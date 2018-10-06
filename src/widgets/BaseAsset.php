@@ -2,7 +2,11 @@
 
 namespace kl83\filestorage\widgets;
 
-abstract class BaseAsset extends \yii\web\AssetBundle
+use Yii;
+use yii\web\View;
+use yii\web\AssetBundle;
+
+abstract class BaseAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/kl83/yii2-file-storage/src/web';
 }

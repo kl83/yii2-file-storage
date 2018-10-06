@@ -43,7 +43,9 @@
   opacity: 0.6;
   transition: 0.4s;
 }
-.kl83-picset-widget .items .item .remove-item .glyphicon {
+.kl83-picset-widget .items .item .remove-item:before {
+  content: '\e014';
+  font-family: 'Glyphicons Halflings';
   font-size: 18px;
   color: #333;
   margin: 1px 0 0 2px;
@@ -66,12 +68,14 @@
   align-items: center;
   cursor: pointer;
 }
-.kl83-picset-widget .new-item span {
+.kl83-picset-widget .new-item:before {
+  content: '\e060';
+  font-family: 'Glyphicons Halflings';
   font-size: 40px;
   color: #777;
   transition: 0.4s;
 }
-.kl83-picset-widget .new-item:hover span {
+.kl83-picset-widget .new-item:hover:before {
   color: #333;
 }
 .kl83-picset-widget .progress-bar-container {

@@ -7,7 +7,7 @@ use yii\web\UploadedFile;
 use yii\base\InvalidConfigException;
 
 /**
- * The class iterates uploaded files specified in the attribute property
+ * The class iterates uploaded files specified in the attributes param
  */
 class UploadsIterator implements Iterator
 {
@@ -34,6 +34,7 @@ class UploadsIterator implements Iterator
             $this->files[$attribute] =
                 UploadedFile::getInstancesByName($attribute);
         }
+        \Yii::info($this->files);
     }
 
     public function current()

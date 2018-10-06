@@ -14,7 +14,9 @@
                 background-repeat: no-repeat;
             }
             .remove-item {
-                .glyphicon {
+                &:before {
+                    content: '\e014';
+                    font-family: 'Glyphicons Halflings';
                     font-size: 18px;
                     color: #333;
                     margin: 1px 0 0 2px;
@@ -62,13 +64,15 @@
         margin-top: -15px;
     }
     .new-item {
-        span {
+        &:before {
+            content: '\e060';
+            font-family: 'Glyphicons Halflings';
             font-size: 40px;
             color: #777;
             transition: 0.4s;
         }
         &:hover {
-            span {
+            &:before {
                 color: #333;
             }
         }

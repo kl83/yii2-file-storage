@@ -1,76 +1,97 @@
-var kl83RegisterPicSetWidget = function(elId, params){
+(function ($) {
+    'use strict';
 
-    var rootEl = $('#'+elId);
-    var form = rootEl.closest('form');
-    var fileInput = rootEl.find('input[type="file"]');
-    var fileSetInput = rootEl.find('input[type="hidden"]');
-    var fileInputName = fileInput.attr('name').replace(/\[\]$/, '');
-    var sortable = rootEl.find('.sortable');
+    $.fn.picsetWidget = function (method) {
+        if (typeof method === 'string') {
+            return methods[method]
+                .apply(this, Array.prototype.slice.apply(arguments, [1]));
+        } else {
+            return methods.init.apply(this, arguments);
+        }
+    };
 
-    jQuery(function($){
+    let methods = {};
 
-        /**
-         * Check limit loaded images.
-         * Returns false if limit is reached, true if not
-         * @returns {Boolean}
-         */
-        var limitReached = function(){
-            return params.maxImages !== false && rootEl.find('.items div.item').length >= params.maxImages;
-        };
-
-        var checkLimit = function(){
-            if ( limitReached() ) {
-                rootEl.find('.items .new-item').fadeOut();
-            } else {
-                rootEl.find('.items .new-item').fadeIn();
-            }
-        };
-
-        // Enable sorting
-        rootEl.find('.sortable').sortable({
-            stop: function ( e, ui ) {
-                var afterId = ui.item.index() ? ui.item.prev().data('id') : 0;
-                $.get(params.moveUrl, { id: ui.item.data('id'), afterId: afterId });
+    methods.init = function (options) {
+        this.data('picset', options);
+        this.find('.sortable').sortable({
+            stop: function (e, ui) {
+                $.get('/' + kl83FileStorageOptions.moduleId + '/default/move', {
+                    id: ui.item.data('id'),
+                    afterId: ui.item.index() ? ui.item.prev().data('id') : 0
+                });
             }
         });
+    };
 
-        // Upload selected file
-        fileInput.change(function(){
-            rootEl.addClass('progress-enabled');
-            form.ajaxSubmit({
-                url: params.uploadUrl+(/\?/.test(params.uploadUrl)?'&':'?')+'fileSetId='+fileSetInput.val()+'&attributes='+fileInputName,
-                type: 'post',
-                success: function(data){
-                    if ( fileSetInput.val() === '0' || ! /\d+/.test(fileSetInput.val()) ) {
-                        fileSetInput.val(data.fileSetId);
-                    }
-                    sortable.append(data.html[fileInputName]);
-                    checkLimit();
-                    setTimeout(function(){
-                        rootEl.find('.item.animation').removeClass('animation');
-                    }, limitReached() ? 400 : 50);
-                    fileInput.val('');
-                    rootEl.removeClass('progress-enabled');
-                    rootEl.find('.progress-bar').width(0);
-                },
-                uploadProgress: function (e, position, total, percent) {
-                    rootEl.find('.progress-bar').width(percent + '%');
+    methods.upload = function () {
+        let $widget = this;
+        let $filesetInput = this.find('input[type="hidden"]');
+        let $fileInput = this.find('input[type="file"]');
+        this.addClass('progress-enabled');
+        this.closest('form').ajaxSubmit({
+            url: '/' + kl83FileStorageOptions.moduleId + '/default/upload' +
+                '?filesetId=' + ($filesetInput.val() || 0) +
+                '&attributes=' + $fileInput.attr('name').replace(/\[\]$/, ''),
+            type: 'post',
+            success: function(data){
+                if ( $filesetInput === '0' || ! /\d+/.test($filesetInput.val()) ) {
+                    $filesetInput.val(data.fileSetId);
                 }
-            });
-        });
-
-        // Remove file
-        $(document).on('click', '#'+elId+' .remove-item', function(){
-            var item = $(this).closest('.item');
-            $.get(params.removeUrl, { id: item.data('id') }, function(){
-                item.addClass('animation');
+                // sortable.append(data.html[fileInputName]);
+                $widget.picsetWidget('checkLimit');
                 setTimeout(function(){
-                    item.remove();
-                    checkLimit();
-                }, 400);
-            });
+                    $widget.find('.item.animation').removeClass('animation');
+                }, $widget.picsetWidget('isLimitReached') ? 400 : 50);
+                $fileInput.val('');
+                $widget.removeClass('progress-enabled');
+                $widget.find('.progress-bar').width(0);
+            },
+            uploadProgress: function (e, position, total, percent) {
+                $widget.find('.progress-bar').width(percent + '%');
+            }
         });
+    };
 
-        checkLimit();
+    methods.deleteItem = function (id) {
+        let $widget = this;
+        let item = this.find('.item[data-id="' + id + '"]');
+        $.get(
+            '/' + kl83FileStorageOptions.moduleId + '/default/delete',
+            {id: id},
+            function () {
+                item.addClass('animation');
+                setTimeout(function () {
+                    item.remove();
+                    $widget.picsetWidget('checkLimit');
+                }, 400);
+            }
+        );
+    };
+
+    methods.checkLimit = function () {
+        if (this.picsetWidget('isLimitReached')) {
+            this.find('.items .new-item').fadeOut();
+        } else {
+            this.find('.items .new-item').fadeIn();
+        }
+    };
+
+    methods.isLimitReached = function () {
+        let options = this.data('picset');
+        return options.maxImages !== false &&
+            this.find('.items div.item').length >= options.maxImages;
+    };
+
+    $(document).on('click', '.kl83-picset-widget .remove-item', function () {
+        let $widget = $(this).closest('.kl83-picset-widget');
+        let item = $(this).closest('.item');
+        $widget.picsetWidget('deleteItem', item.data('id'));
     });
-};
+
+    $(document).on('change', '.kl83-picset-widget input[type="file"]', function () {
+        let $widget = $(this).closest('.kl83-picset-widget');
+        $widget.picsetWidget('upload');
+    });
+
+})(jQuery);

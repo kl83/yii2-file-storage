@@ -3,6 +3,7 @@
 namespace kl83\filestorage;
 
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * Module contain controller and models to store files in upload directory and collect they in file sets.
@@ -13,6 +14,8 @@ class Module extends \yii\base\Module
      * I18n.
      */
     const TRANSLATION_NAME = 'kl83/filestorage';
+
+    private static $instance;
 
     /**
      * @var string Upload directory path.
@@ -37,9 +40,23 @@ class Module extends \yii\base\Module
     public $maxImageHeight = 1080;
 
     /**
-     * @var string User role or permission name to manage files.
+     * @var array User roles and permission names to manage files
      */
-    public $managerRoles = [ 'admin', 'administrator' ];
+    public $managerRoles = ['admin', 'administrator'];
+
+    public $forbiddenFilesMask = '~\.(php|cgi|htacess|htpasswd)$~';
+
+    public function testUploadDir()
+    {
+        if (!file_exists($this->uploadDir) || !is_dir($this->uploadDir)) {
+            $msg = Yii::t(
+                self::TRANSLATION_NAME,
+                'Directory "{d}" don\'t exists or is not a directory!',
+                ['d' => $this->uploadDir]
+            );
+            throw new InvalidConfigException($msg);
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -69,26 +86,30 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Return module configuration or module instance. To get module settings in
-     * models without module initialization.
-     * @return self
+     * Finds and returns module instance
+     * @return self|null
      */
     public static function findInstance()
     {
-        $className = self::className();
-        foreach (Yii::$app->modules as $moduleId => $module) {
-            if (is_object($module)) {
-                if ($module::className() == $className) {
-                    return $module;
+        if (!self::$instance) {
+            $className = self::className();
+            foreach (Yii::$app->modules as $moduleId => $module) {
+                if (is_object($module)) {
+                    if ($module::className() == $className) {
+                        self::$instance = $module;
+                        break;
+                    }
+                } elseif (is_array($module)) {
+                    if ($module['class'] == $className) {
+                        self::$instance = Yii::$app->getModule($moduleId);
+                        break;
+                    }
+                } elseif ($module == $className) {
+                    self::$instance = Yii::$app->getModule($moduleId);
+                    break;
                 }
-            } elseif (is_array($module)) {
-                if ($module['class'] == $className) {
-                    return Yii::$app->getModule($moduleId);
-                }
-            } elseif ($module == $className) {
-                return Yii::$app->getModule($moduleId);
             }
         }
-        return null;
+        return self::$instance;
     }
 }

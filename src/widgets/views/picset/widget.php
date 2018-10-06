@@ -4,20 +4,16 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $widget kl83\filestorage\widgets\PicSetWidget */
+/* @var $input string */
 /* @var $fileSet kl83\filestorage\models\FileSet */
-/* @var $hasModel boolean */
 
-$newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: none' : '';
+$newItemStyle = $fileSet && $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: none' : '';
 
 ?>
 
-<?= Html::beginTag('div', $widget->wrapperOptions) ?>
+<?= Html::beginTag('div', $widget->widgetOptions) ?>
 
-    <?php if ($hasModel) : ?>
-        <?= Html::activeHiddenInput($widget->model, $widget->attribute) ?>
-    <?php else : ?>
-        <?= Html::hiddenInput($widget->name, $fileSet->id) ?>
-    <?php endif; ?>
+    <?= $input ?>
 
     <?= Html::fileInput($widget->id . '-file[]', null, [
         'id' => $widget->id . '-file',
@@ -28,19 +24,21 @@ $newItemStyle = $fileSet->getFiles()->count() >= $widget->maxImages ? 'display: 
     <div class="items">
 
         <div class="sortable">
-            <?php foreach ($fileSet->files as $file) : ?>
-                <?= $this->render('_item', [
-                    'file' => $file,
-                    'animate' => false,
-                ]) ?>
-            <?php endforeach; ?>
+            <?php if ($fileSet) : ?>
+                <?php foreach ($fileSet->files as $file) : ?>
+                    <?= $this->render('_item', [
+                        'file' => $file,
+                        'animate' => false,
+                    ]) ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-        <label class="item new-item" for="<?= "$widget->id-file" ?>" style='<?= $newItemStyle ?>'>
-            <span class="glyphicon glyphicon-picture"></span>
+        <label
+                class="item new-item"
+                for="<?= $widget->id . '-file' ?>"
+                style='<?= $newItemStyle ?>'>
         </label>
-
-        <div class="clearfix"></div>
 
     </div>
 

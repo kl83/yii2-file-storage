@@ -3,34 +3,29 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $widget kl83\filestorage\widgets\PicSetWidget */
-/* @var $hasModel boolean */
-/* @var $value integer */
-/* @var $file kl83\filestorage\models\File */
+/* @var $widget kl83\filestorage\widgets\PicWidget */
+/* @var $input string */
+/* @var $file kl83\filestorage\models\File|null */
 
 ?>
 
-<?= Html::beginTag('div', $widget->wrapperOptions) ?>
+<?= Html::beginTag('div', $widget->widgetOptions) ?>
 
-    <?php if ($hasModel) : ?>
-        <?= Html::activeHiddenInput($widget->model, $widget->attribute) ?>
-    <?php else : ?>
-        <?= Html::hiddenInput($widget->name, $value) ?>
-    <?php endif; ?>
+    <?= $input ?>
 
     <?= Html::fileInput($widget->id . '-file', null, [
         'id' => $widget->id . '-file',
         'accept' => 'image/*',
     ]) ?>
 
-    <span class="remove"><span class='glyphicon glyphicon-remove'></span></span>
+    <span class="remove"></span>
+
     <label
         class="picture"
-        for="<?= "$widget->id-file" ?>"
-        style="background-image: <?= $value && $file ? "url('$file->url')" : 'none' ?>"
+        for="<?= $widget->id ?>-file"
+        <?= $file ? 'style="background-image: url(\'' . $file->url . '\')"' : '' ?>
         ></label>
-    <label class="upload" for="<?= "$widget->id-file" ?>">
-        <span class="glyphicon glyphicon-picture"></span>
-    </label>
+
+    <label class="upload" for="<?= "$widget->id-file" ?>"></label>
 
 <?= Html::endTag('div') ?>

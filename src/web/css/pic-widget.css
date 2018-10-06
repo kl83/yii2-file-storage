@@ -28,7 +28,9 @@
                 width 0s 0.2s,
                 height 0s 0.2s;
 }
-.kl83-pic-widget .remove .glyphicon {
+.kl83-pic-widget .remove:after {
+  content: '\e014';
+  font-family: 'Glyphicons Halflings';
   font-size: 18px;
   color: #333;
   margin: 1px 0 0 2px;
@@ -59,12 +61,14 @@
   opacity: 1;
   transition: 0.2s 0.2s;
 }
-.kl83-pic-widget .upload span {
+.kl83-pic-widget .upload:before {
+  content: '\e060';
+  font-family: 'Glyphicons Halflings';
   font-size: 40px;
   color: #777;
   transition: 0.4s;
 }
-.kl83-pic-widget .upload:hover span {
+.kl83-pic-widget .upload:hover:before {
   color: #333;
 }
 .kl83-pic-widget.show-picture .remove {

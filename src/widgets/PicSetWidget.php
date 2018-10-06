@@ -2,9 +2,8 @@
 
 namespace kl83\filestorage\widgets;
 
+use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\Url;
-use kl83\filestorage\Module;
 use kl83\filestorage\models\FileSet;
 
 /**
@@ -15,9 +14,7 @@ class PicSetWidget extends \yii\widgets\InputWidget
     /**
      * @var array Wrapper DOM element html-attributes.
      */
-    public $wrapperOptions = [
-        'class' => 'kl83-picset-widget',
-    ];
+    public $widgetOptions = [];
 
     /**
      * @var integer|boolean Maximum possible count of images. False is
@@ -25,56 +22,37 @@ class PicSetWidget extends \yii\widgets\InputWidget
      */
     public $maxImages = false;
 
-    /**
-     * @var \kl83\filestorage\Module Filestorage module instance.
-     */
-    private $filestorageModule;
-
-    /**
-     * {inheritdoc}
-     */
-    public function init()
+    private function getValue()
     {
-        parent::init();
-        $this->filestorageModule = Module::findInstance();
-        $this->wrapperOptions['id'] = "$this->id-wrapper";
-        PicSetWidgetAsset::register($this->view);
+        return $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
     }
 
-    /**
-     * Returns the FileSet by id. If it is not found, then a new one will be returned.
-     * @param integer $id
-     * @return FileSet
-     */
-    private function getFileSet($id)
+    private function getFileSet()
     {
-        if ($id && $fileSet = FileSet::findOne($id)) {
-            return $fileSet;
-        } else {
-            return new FileSet;
+        $value = $this->getValue();
+        if ($value) {
+            return FileSet::findOne($value);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run()
     {
-        $value = $this->hasModel() ? $this->model->{$this->attribute} : $this->value;
-        $fileSet = $this->getFileSet($value);
-        $params = [
-            'uploadUrl' => Url::to([$this->filestorageModule->id . '/default/upload-pic-set-item']),
-            'removeUrl' => Url::to([$this->filestorageModule->id . '/default/delete-file']),
-            'moveUrl' => Url::to([$this->filestorageModule->id . '/default/move']),
+        PicSetWidgetAsset::register($this->view);
+        if (empty($this->widgetOptions['id'])) {
+            $this->widgetOptions['id'] = self::getId();
+        }
+        Html::addCssClass($this->widgetOptions, 'kl83-picset-widget');
+        $options = [
             'maxImages' => $this->maxImages,
         ];
-        $this->view->registerJs(
-            'kl83RegisterPicSetWidget("' . $this->wrapperOptions['id'] . '", ' . Json::encode($params) . ');'
-        );
+        $this->view->registerJs('
+            $("#' . $this->widgetOptions['id'] . '")
+                .picsetWidget(' . Json::encode($options) . ');
+        ');
         return $this->render('picset/widget', [
             'widget' => $this,
-            'hasModel' => $this->hasModel(),
-            'fileSet' => $fileSet,
+            'input' => self::renderInputHtml('hidden'),
+            'fileSet' => $this->getFileSet(),
         ]);
     }
 }
