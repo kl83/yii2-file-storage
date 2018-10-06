@@ -9,22 +9,28 @@ Module and widgets to upload files. The module uploads files to a random directo
 The preferred way to install this extension is through [composer](https://getcomposer.org/).
 
 Either run
+
 ~~~
-php composer.phar require kl83/yii2-file-storage ~1.1.0
+php composer.phar require kl83/yii2-file-storage ~1.2.0
 ~~~
+
 or add
+
 ~~~
-"kl83/yii2-file-storage": "~1.1.0"
+"kl83/yii2-file-storage": "~1.2.0"
 ~~~
+
 to the require section of your composer.json file.
 
 And apply migrations.
+
 ~~~
 ./yii migrate --migrationPath=@vendor/kl83/yii2-file-storage/migrations
 ~~~
 
 ## Module configuration
 config/web.php
+
 ~~~
 ...
 "modules" => [
@@ -44,55 +50,57 @@ Option|Default|Description
 **(array) managerRoles**|[ 'admin', 'administrator' ]|Names of roles or permissions to manage files.
 
 ## Module actions
+
 ```
-null defaut/delete-file (int $id)
+defaut/delete (int $id) : null
 $id - id of file to delete
 ```
-Deletes specified file.
+
+Delete file.
+
 ***
+
 ```
-null defaut/move (int $id, int $afterId)
+defaut/move (int $id, int $afterId) : null
 $id - id of file to move
-$afterId - set file position to be after that file, if value is empty, then file will be the first
+$afterId - set file position to be after that file, if value is empty, then file
+    will be the first
 ```
-Moves specified file to some position inside fileset.
+
+Move file to some position inside fileset.
+
 ***
+
 ```
-json defaut/upload (string|array $attributes = null)
-$attributes - key's of $_FILES array to be save, if not set, then all files to be saved
-return [
-    '$_FILES attribute' => [
-        'id' => int file id,
-        'url' => url to download file,
-    ],
-]
-```
-Uploads files.
-***
-```
-json defaut/upload-to-file-set (int $fileSetId = null, string|array $attributes = null)
-$fileSetId - fileset id, if null, then new fileset will be created
-$attributes - see default/upload
+defaut/upload (string|array $attributes = null, int $filesetId = null) : json
+$attributes - key's of $_FILES array to be save, if not set, then all files to
+    be saved
+$filesetId - a fileset to which files will be attached,
+    if it's -1 then new fileset will be created
 return [
     'files' => [
-        '$_FILES attribute' => [
-            'id' => int file id,
-            'url' => url to download file,
-        ],
+        id and url of file,
     ],
-    'fileSetId' => int fileset id,
+    'fileset' => fileset id,
 ]
 ```
-Uploads files and stores his in specified fileset.
+
+Uploads files.
+
 ***
 
 ## PicWidget usage
+
 Widget to select and upload some one image.
+
 ~~~
 $form->field($model, 'picId')->widget('kl83\filestorage\widgets\PicWidget');
 ~~~
-picId must be integer attribute
+
+picId must be integer or null
+
 ### Example model methods to get uploaded file
+
 ~~~
 public function getPic()
 {
@@ -105,14 +113,19 @@ public function getPicUrl()
 ~~~
 
 ## PicSetWidget usage
+
 Widget to select and upload some images.
+
 ~~~
 $form->field($model, 'picSetId')->widget('kl83\filestorage\widgets\PicSetWidget', [
     'maxImages' => 3, // default is unlimited
 ]);
 ~~~
+
 picSetId must be integer attribute
+
 ### Example model methods to get uploaded files
+
 ~~~
 public function getPicSet()
 {
@@ -137,4 +150,5 @@ public fucntion getCoverUrl()
 ~~~
 
 ## License
+
 MIT License
