@@ -33,7 +33,7 @@ class DefaultController extends Controller
         $uploadedFiles = new UploadsIterator($attributes);
         $handler = new UploadsHandler([
             'uploadedFiles' => $uploadedFiles,
-            'fileset' => $filesetId ? $this->findFileSet($filesetId) : $filesetId,
+            'fileset' => $filesetId > 0 ? $this->findFileSet($filesetId) : $filesetId,
         ]);
         $handler->saveFiles();
         return $this->asJson(new UploadsResponse($handler));
