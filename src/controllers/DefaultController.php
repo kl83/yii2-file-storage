@@ -64,6 +64,24 @@ class DefaultController extends Controller
     }
 
     /**
+     * @return bool
+     */
+    private function isUserCan()
+    {
+        $roles = Module::getInstance()->managerRoles;
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if (Yii::$app->user->can($role)) {
+                    return true;
+                }
+            }
+        } else {
+            return Yii::$app->user->can($roles);
+        }
+        return false;
+    }
+
+    /**
      * @param integer $id
      * @return File
      * @throws ForbiddenHttpException
@@ -76,8 +94,9 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
         if (
-            Yii::$app->user->can(Module::getInstance()->managerRoles) ||
-            $model->createdById && $model->createdById != Yii::$app->user->id
+            $model->createdById &&
+            $model->createdById != Yii::$app->user->id &&
+            !$this->isUserCan()
         ) {
             throw new ForbiddenHttpException();
         }
@@ -97,8 +116,9 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
         if (
-            Yii::$app->user->can(Module::getInstance()->managerRoles) ||
-            $model->createdById && $model->createdById != Yii::$app->user->id
+            $model->createdById &&
+            $model->createdById != Yii::$app->user->id &&
+            !$this->isUserCan()
         ) {
             throw new ForbiddenHttpException();
         }
