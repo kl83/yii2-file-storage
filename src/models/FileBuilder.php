@@ -26,6 +26,11 @@ class FileBuilder
      */
     private $uploadedFile;
 
+    /**
+     * @var string
+     */
+    private $downloadSrc;
+
     public function __construct()
     {
         $this->module = Module::findInstance();
@@ -56,6 +61,12 @@ class FileBuilder
     public function uploadedFile($uploadedFile)
     {
         $this->uploadedFile = $uploadedFile;
+        return $this;
+    }
+
+    public function download($src)
+    {
+        $this->downloadSrc = $src;
         return $this;
     }
 
@@ -95,14 +106,18 @@ class FileBuilder
      */
     private function generateFilePath()
     {
+        if ($this->uploadedFile) {
+            $fileName = $this->uploadedFile->name;
+        } else {
+            $fileName = basename($this->downloadSrc);
+        }
         do {
             $randomDir = Yii::$app->security->generateRandomString();
             if (Yii::$app->user->isGuest) {
                 $randomDir = substr($randomDir, 0, 2) . '/' .
                     substr($randomDir, 2);
             }
-            $path = $this->getUserDir() . '/' . $randomDir . '/' .
-                $this->uploadedFile->name;
+            $path = $this->getUserDir() . '/' . $randomDir . '/' . $fileName;
         } while (file_exists($this->module->uploadDir . '/' . $path));
         return $path;
     }
@@ -118,8 +133,12 @@ class FileBuilder
         if (!mkdir(dirname($path), 0777, true)) {
             throw new Exception();
         }
-        if (!$this->uploadedFile->saveAs($path)) {
-            throw new Exception();
+        if ($this->uploadedFile) {
+            if (!$this->uploadedFile->saveAs($path)) {
+                throw new Exception();
+            }
+        } elseif (preg_match('~^https?://~', $this->downloadSrc)) {
+            file_put_contents($path, fopen($this->downloadSrc, 'r'));
         }
         $this->minimizeImage();
     }
