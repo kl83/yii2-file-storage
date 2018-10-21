@@ -4,7 +4,9 @@ namespace kl83\filestorage\models;
 
 use Exception;
 use Yii;
+use yii\base\ErrorException;
 use yii\db\ActiveRecord;
+use yii\base\ModelEvent;
 use yii\web\UploadedFile;
 use yii\imagine\Image;
 use kl83\filestorage\Module;
@@ -127,7 +129,7 @@ class FileBuilder
         $this->file->relPath = $this->generateFilePath();
     }
 
-    public function __beforeInsertFile()
+    public function __beforeInsertFile(ModelEvent $event)
     {
         $path = $this->file->path;
         if (!mkdir(dirname($path), 0777, true)) {
@@ -138,7 +140,11 @@ class FileBuilder
                 throw new Exception();
             }
         } elseif (preg_match('~^https?://~', $this->downloadSrc)) {
-            file_put_contents($path, fopen($this->downloadSrc, 'r'));
+            try {
+                file_put_contents($path, fopen($this->downloadSrc, 'r'));
+            } catch (ErrorException $e) {
+                $event->isValid = false;
+            }
         }
         $this->minimizeImage();
     }
