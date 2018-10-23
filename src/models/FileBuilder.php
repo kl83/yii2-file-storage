@@ -146,7 +146,9 @@ class FileBuilder
                 $event->isValid = false;
             }
         }
-        $this->minimizeImage();
+        if (preg_match('~\.(jpg|jpeg|png|gif)$~', $this->file->path)) {
+            $this->minimizeImage();
+        }
     }
 
     public function build()
