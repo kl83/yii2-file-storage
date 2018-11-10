@@ -28,6 +28,7 @@
             setTimeout(function(){
                 this.find('.picture').css('backgroundImage', 'none');
             }, 200);
+            this.trigger('pic-widget:change');
         }
     };
 
@@ -63,6 +64,7 @@
                     );
                     $widget.addClass('show-picture');
                 }
+                $widget.trigger('pic-widget:change');
             }
         });
     };
