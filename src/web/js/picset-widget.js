@@ -33,6 +33,7 @@
                 '&attributes=' + fileInputName,
             type: 'post',
             success: function (data) {
+                var isNewFileset = $filesetInput.val() === '';
                 $filesetInput.val(data.fileset);
                 for (let i in data.files[fileInputName]) {
                     let item = $(Mustache.render(
@@ -49,6 +50,11 @@
                 $fileInput.val('');
                 $widget.removeClass('progress-enabled');
                 $widget.find('.progress-bar').width(0);
+                if (isNewFileset) {
+                    $widget.trigger('picset:after-create');
+                } else {
+                    $widget.trigger('picset:after-update');
+                }
             },
             uploadProgress: function (e, position, total, percent) {
                 $widget.find('.progress-bar').width(percent + '%');
