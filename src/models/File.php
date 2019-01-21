@@ -79,4 +79,15 @@ class File extends ActiveRecord
     {
         return Module::findInstance()->uploadDirUrl . '/' . $this->relPath;
     }
+
+    public function getThumb(string $id = null): Thumb
+    {
+        $thumbFactory = Module::findInstance()->getThumbFactory($id);
+        return $thumbFactory->createThumb($this);
+    }
+
+    public function getThumbUrl(string $id = null): string
+    {
+        return $this->getThumb($id)->getUrl();
+    }
 }

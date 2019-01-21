@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.0",
         "bower-asset/jquery-form": "^4.0.0",
         "bower-asset/mustache": "^3.0.0",
         "yiisoft/yii2": "^2.0.0",

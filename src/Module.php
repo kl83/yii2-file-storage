@@ -2,8 +2,8 @@
 
 namespace kl83\filestorage;
 
+use kl83\filestorage\models\ThumbFactory;
 use Yii;
-use yii\base\InvalidConfigException;
 
 /**
  * Module contain controller and models to store files in upload directory and
@@ -37,6 +37,12 @@ class Module extends \yii\base\Module
     public $maxImageHeight = 1080;
 
     /**
+     * @var array Thumbnails configurations
+     * @see ThumbFactory
+     */
+    public $thumbs = [];
+
+    /**
      * @var array|string User roles and permission names to manage files
      */
     public $managerRoles = ['admin', 'administrator'];
@@ -49,6 +55,18 @@ class Module extends \yii\base\Module
         parent::init();
         $this->uploadDir = Yii::getAlias($this->uploadDir);
         $this->uploadDirUrl = Yii::getAlias($this->uploadDirUrl);
+    }
+
+    public function getThumbFactory(string $id = null): ThumbFactory
+    {
+        if (!$id) {
+            $id = array_keys($this->thumbs)[0];
+        }
+        return new ThumbFactory([
+            'id' => $id,
+            'width' => $this->thumbs[$id]['width'],
+            'height' => $this->thumbs[$id]['height'],
+        ]);
     }
 
     /**
