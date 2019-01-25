@@ -2,6 +2,7 @@
 
 namespace kl83\filestorage;
 
+use kl83\filestorage\models\Watermark;
 use kl83\filestorage\models\ThumbFactory;
 use Yii;
 
@@ -50,12 +51,23 @@ class Module extends \yii\base\Module
     ];
 
     /**
+     * @var array
+     * The watermark configuration
+     * @see Watermark
+     */
+    public $watermark;
+
+    /**
      * @var array|string User roles and permission names to manage files
      */
     public $managerRoles = ['admin', 'administrator'];
 
     public $forbiddenFilesMask = '~\.(php|cgi|htacess|htpasswd)$~';
 
+    /**
+     * @var Watermark
+     */
+    private $_watermark;
 
     public function init()
     {
@@ -74,6 +86,14 @@ class Module extends \yii\base\Module
             'width' => $this->thumbs[$id]['width'],
             'height' => $this->thumbs[$id]['height'],
         ]);
+    }
+
+    public function getWatermark(): Watermark
+    {
+        if (!$this->_watermark) {
+            $this->_watermark = new Watermark($this->watermark);
+        }
+        return $this->_watermark;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace kl83\filestorage\models;
 
+use Exception;
 use Yii;
 use yii\db\ActiveRecord;
 use kl83\filestorage\Module;
@@ -77,7 +78,15 @@ class File extends ActiveRecord
      */
     public function getUrl()
     {
-        return Module::findInstance()->uploadDirUrl . '/' . $this->relPath;
+        $module = Module::findInstance();
+        if ($module->watermark) {
+            try {
+                return (new MarkedFile($this))->getUrl();
+            } catch (Exception $exception) {
+                Yii::warning($exception->getMessage());
+            }
+        }
+        return $module->uploadDirUrl . '/' . $this->relPath;
     }
 
     public function getThumb(string $id = null): Thumb
