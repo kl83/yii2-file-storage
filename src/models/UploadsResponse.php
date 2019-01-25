@@ -19,7 +19,7 @@ class UploadsResponse implements Iterator
     {
         $this->data = [
             'files' => ArrayHelper::toArray($handler->savedFiles, [
-                File::className() => ['id', 'url'],
+                File::class => ['id', 'url', 'thumbUrl'],
             ]),
             'fileset' => $handler->fileset ? $handler->fileset->id : null,
         ];

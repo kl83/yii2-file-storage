@@ -10,7 +10,7 @@
         }
     };
 
-    let methods = {};
+    var methods = {};
 
     methods.init = function (options) {
         this.data('picset', options);

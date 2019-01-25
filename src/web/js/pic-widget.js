@@ -24,9 +24,10 @@
         }
         $input.val('');
         if (!silence) {
+            var $this = this;
             this.removeClass('show-picture');
             setTimeout(function(){
-                this.find('.picture').css('backgroundImage', 'none');
+                $this.find('.picture').css('backgroundImage', 'none');
             }, 200);
             this.trigger('pic-widget:change');
         }
@@ -53,14 +54,14 @@
                     setTimeout(function () {
                         $img.css(
                             'backgroundImage',
-                            "url('" + data.files[fileInputName][0].url + "')"
+                            "url('" + data.files[fileInputName][0].thumbUrl + "')"
                         );
                         $widget.removeClass('change-picture');
                     }, 200);
                 } else {
                     $img.css(
                         'backgroundImage',
-                        "url('" + data.files[fileInputName][0].url + "')"
+                        "url('" + data.files[fileInputName][0].thumbUrl + "')"
                     );
                     $widget.addClass('show-picture');
                 }

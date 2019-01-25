@@ -38,9 +38,16 @@ class Module extends \yii\base\Module
 
     /**
      * @var array Thumbnails configurations
+     * You can override the thumbs config. But be careful,
+     * the first (and default) factory config is used by the widgets.
      * @see ThumbFactory
      */
-    public $thumbs = [];
+    public $thumbs = [
+        'thumbnail' => [
+            'width' => 130,
+            'height' => 130,
+        ]
+    ];
 
     /**
      * @var array|string User roles and permission names to manage files
