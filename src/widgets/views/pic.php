@@ -19,11 +19,13 @@ use yii\helpers\Html;
     ]) ?>
 
     <span class="remove"></span>
+    <span class="rotate-left"></span>
+    <span class="rotate-right"></span>
 
     <label
         class="picture"
         for="<?= $widget->id ?>-file"
-        <?= $file ? 'style="background-image: url(\'' . $file->url . '\')"' : '' ?>
+        <?= $file ? 'style="background-image: url(\'' . $file->getThumbUrl() . '\')"' : '' ?>
         ></label>
 
     <label class="upload" for="<?= $widget->id . '-file' ?>"></label>

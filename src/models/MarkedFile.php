@@ -44,6 +44,14 @@ class MarkedFile
         }
     }
 
+    public function delete()
+    {
+        $path = $this->getPath();
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    }
+
     public function getUrl(bool $createFile = true): string
     {
         if ($createFile) {

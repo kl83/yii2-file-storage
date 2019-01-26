@@ -83,6 +83,7 @@ class FileBuilder
         } catch (Exception $e) {
             return;
         }
+        Image::autorotate($img);
         $box = $img->getSize();
         if ($box->getWidth() > $this->module->maxImageWidth) {
             $box = $box->widen($this->module->maxImageWidth);

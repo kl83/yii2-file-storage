@@ -10,6 +10,21 @@
         }
     };
 
+    function reloadThumbnail(id) {
+        var img = this.find('.item[data-id="' + id + '"] .image');
+        var thumb = img.css('backgroundImage')
+            .replace(/(\?\d+|)(['"])\)/, '?' + (new Date()).getTime() + '$2)');
+        img.css('backgroundImage', thumb)
+    }
+
+    function rotate(id, direction) {
+        var $this = this;
+        var url = '/' + kl83FileStorageOptions.moduleId + '/rotate/' + direction;
+        $.get(url, {id: id}, function () {
+            reloadThumbnail.apply($this, [id]);
+        });
+    }
+
     var methods = {};
 
     methods.init = function (options) {
@@ -78,6 +93,14 @@
         );
     };
 
+    methods.rotateLeft = function (id) {
+        rotate.apply(this, [id, 'left']);
+    };
+
+    methods.rotateRight = function (id) {
+        rotate.apply(this, [id, 'right']);
+    };
+
     function checkLimit() {
         if (isLimitReached.apply(this)) {
             this.find('.items .new-item').fadeOut();
@@ -130,6 +153,18 @@
         e.stopPropagation();
         $(this).find('input[type="file"]').get(0).files =
             e.originalEvent.dataTransfer.files;
+    });
+
+    $(document).on('click', '.kl83-picset-widget .rotate-left', function () {
+        var $widget = $(this).closest('.kl83-picset-widget');
+        var item = $(this).closest('.item');
+        $widget.picsetWidget('rotateLeft', item.data('id'));
+    });
+
+    $(document).on('click', '.kl83-picset-widget .rotate-right', function () {
+        var $widget = $(this).closest('.kl83-picset-widget');
+        var item = $(this).closest('.item');
+        $widget.picsetWidget('rotateRight', item.data('id'));
     });
 
 })(jQuery);

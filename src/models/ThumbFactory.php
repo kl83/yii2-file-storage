@@ -2,6 +2,7 @@
 
 namespace kl83\filestorage\models;
 
+use kl83\filestorage\Module;
 use yii\base\BaseObject;
 
 class ThumbFactory extends BaseObject
@@ -38,5 +39,16 @@ class ThumbFactory extends BaseObject
             $thumb->createThumbnail();
         }
         return $thumb;
+    }
+
+    public static function updateThumbnails(File $file)
+    {
+        $module = Module::getInstance();
+        $factories = array_keys($module->thumbs);
+        foreach ($factories as $factory) {
+            $thumb = $module->getThumbFactory($factory)
+                ->createThumb($file, false);
+            $thumb->updateThumbnail();
+        }
     }
 }

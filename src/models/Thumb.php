@@ -41,6 +41,20 @@ class Thumb extends BaseObject
         }
     }
 
+    public function deleteThumbnail()
+    {
+        $path = $this->getPath();
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    }
+
+    public function updateThumbnail()
+    {
+        $this->deleteThumbnail();
+        $this->createThumbnail();
+    }
+
     private function getRelPath(): string
     {
         return 'thumbs/' . $this->factory->id . '/' . $this->file->relPath;

@@ -6,6 +6,7 @@ use Exception;
 use Yii;
 use yii\db\ActiveRecord;
 use kl83\filestorage\Module;
+use yii\imagine\Image;
 
 /**
  * @property integer $id
@@ -98,5 +99,28 @@ class File extends ActiveRecord
     public function getThumbUrl(string $id = null): string
     {
         return $this->getThumb($id)->getUrl();
+    }
+
+    private function rotate(int $deg)
+    {
+        $module = Module::getInstance();
+        $path = $this->getPath();
+        $image = Image::getImagine()->open($path);
+        $image->rotate($deg)
+            ->save($path, ['quality' => 60]);
+        ThumbFactory::updateThumbnails($this);
+        if ($module->watermark) {
+            (new MarkedFile($this))->delete();
+        }
+    }
+
+    public function rotateLeft()
+    {
+        $this->rotate(-90);
+    }
+
+    public function rotateRight()
+    {
+        $this->rotate(90);
     }
 }

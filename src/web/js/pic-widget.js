@@ -10,7 +10,25 @@
         }
     };
 
-    let methods = {};
+    function reloadThumbnail() {
+        var img = this.find('label.picture');
+        var thumb = img.css('backgroundImage')
+            .replace(/(\?\d+|)(['"])\)/, '?' + (new Date()).getTime() + '$2)');
+        img.css('backgroundImage', thumb)
+    }
+
+    function rotate(direction) {
+        var $this = this;
+        var id = this.find('input[type="hidden"]').val();
+        var url = '/' + kl83FileStorageOptions.moduleId + '/rotate/' + direction;
+        if (id > 0) {
+            $.get(url, {id: id}, function () {
+                reloadThumbnail.apply($this);
+            });
+        }
+    }
+
+    var methods = {};
 
     methods.init = function () {
     };
@@ -31,6 +49,14 @@
             }, 200);
             this.trigger('pic-widget:change');
         }
+    };
+
+    methods.rotateLeft = function () {
+        rotate.apply(this, ['left']);
+    };
+
+    methods.rotateRight = function () {
+        rotate.apply(this, ['right']);
     };
 
     methods.upload = function () {
@@ -78,6 +104,14 @@
     $(document).on('click', '.kl83-pic-widget .remove', function () {
         let $widget = $(this).closest('.kl83-pic-widget');
         $widget.picWidget('delete');
+    });
+
+    $(document).on('click', '.kl83-pic-widget .rotate-left', function () {
+        $(this).closest('.kl83-pic-widget').picWidget('rotateLeft');
+    });
+
+    $(document).on('click', '.kl83-pic-widget .rotate-right', function () {
+        $(this).closest('.kl83-pic-widget').picWidget('rotateRight');
     });
 
     $(document).on('dragenter dragover', '.kl83-pic-widget', function (e) {

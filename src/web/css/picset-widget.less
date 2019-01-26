@@ -52,6 +52,43 @@
                     opacity: 1;
                 }
             }
+            .rotate-left, .rotate-right {
+                position: absolute;
+                bottom: 15px;
+                z-index: 1;
+                display: block;
+                width: 20px;
+                height: 20px;
+                background: white;
+                border-radius: 50%;
+                cursor: pointer;
+                text-align: center;
+                opacity: 0;
+                box-shadow: 0 0 3px 0 rgba(0,0,0,.5);
+                transition: 0.2s;
+                &:hover {
+                    opacity: 1 !important;
+                }
+            }
+            .rotate-left {
+                right: ~"calc(50% + 5px)";
+                &:after {
+                    content: '\21b6';
+                    font-family: Arial;
+                }
+            }
+            .rotate-right {
+                left: ~"calc(50% + 5px)";
+                &:after {
+                    content: '\21b7';
+                    font-family: Arial;
+                }
+            }
+            &:hover {
+                .rotate-left, .rotate-right {
+                    opacity: .6;
+                }
+            }
             &.animation {
                 width: 0;
                 margin-right: 0;
