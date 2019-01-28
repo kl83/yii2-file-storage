@@ -92,7 +92,7 @@ class FileBuilder
             $box = $box->heighten($this->module->maxImageHeight);
         }
         $img->resize($box);
-        $img->save(null, ['quality' => 60]);
+        $img->save(null, ['quality' => $this->module->jpegQuality]);
     }
 
     private function getUserDir()

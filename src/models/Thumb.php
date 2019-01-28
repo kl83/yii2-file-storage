@@ -34,7 +34,7 @@ class Thumb extends BaseObject
                     $this->factory->width,
                     $this->factory->height
                 );
-                $img->save($path, ['quality' => 60]);
+                $img->save($path, ['quality' => Module::getInstance()->jpegQuality]);
             } catch (Exception $exception) {
                 Yii::warning($exception->getMessage());
             }

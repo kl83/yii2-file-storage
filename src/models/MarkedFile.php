@@ -37,10 +37,10 @@ class MarkedFile
             if (!file_exists($dirname)) {
                 mkdir($dirname, 0777, true);
             }
-            Module::findInstance()
-                ->getWatermark()
+            $module = Module::findInstance();
+            $module->getWatermark()
                 ->addWatermark($source)
-                ->save($path, ['quality' => 60]);
+                ->save($path, ['quality' => $module->jpegQuality]);
         }
     }
 

@@ -75,12 +75,13 @@ class File extends ActiveRecord
     }
 
     /**
+     * @param bool $watermark
      * @return string
      */
-    public function getUrl()
+    public function getUrl(bool $watermark = true): string
     {
         $module = Module::findInstance();
-        if ($module->watermark) {
+        if ($watermark && $module->watermark) {
             try {
                 return (new MarkedFile($this))->getUrl();
             } catch (Exception $exception) {
@@ -107,7 +108,7 @@ class File extends ActiveRecord
         $path = $this->getPath();
         $image = Image::getImagine()->open($path);
         $image->rotate($deg)
-            ->save($path, ['quality' => 60]);
+            ->save($path, ['quality' => $module->jpegQuality]);
         ThumbFactory::updateThumbnails($this);
         if ($module->watermark) {
             (new MarkedFile($this))->delete();

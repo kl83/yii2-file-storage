@@ -38,6 +38,11 @@ class Module extends \yii\base\Module
     public $maxImageHeight = 1080;
 
     /**
+     * @var int
+     */
+    public $jpegQuality = 60;
+
+    /**
      * @var array Thumbnails configurations
      * You can override the thumbs config. But be careful,
      * the first (and default) factory config is used by the widgets.
