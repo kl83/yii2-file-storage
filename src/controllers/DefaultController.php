@@ -24,11 +24,13 @@ class DefaultController extends Controller
      * If is null then File will be created without FileSet
      * If is -1 then new FileSet will be created
      * If is numeric then files will be added to specified FileSet
+     * @param null $thumbnail Thumbnail configuration id
+     * If null, the default thumbnail configuration will be used
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      * @throws ForbiddenHttpException
      */
-    public function actionUpload($attributes = null, $filesetId = null)
+    public function actionUpload($attributes = null, $filesetId = null, $thumbnail = null)
     {
         $uploadedFiles = new UploadsIterator($attributes);
         $handler = new UploadsHandler([
@@ -36,7 +38,7 @@ class DefaultController extends Controller
             'fileset' => $filesetId > 0 ? $this->findFileSet($filesetId) : $filesetId,
         ]);
         $handler->saveFiles();
-        return $this->asJson(new UploadsResponse($handler));
+        return $this->asJson(new UploadsResponse($handler, $thumbnail));
     }
 
     /**

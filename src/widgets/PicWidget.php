@@ -2,8 +2,8 @@
 
 namespace kl83\filestorage\widgets;
 
-use yii\helpers\Html;
 use kl83\filestorage\models\File;
+use yii\helpers\Html;
 
 /**
  * Widget to upload one file
@@ -14,6 +14,19 @@ class PicWidget extends \yii\widgets\InputWidget
      * @var array HTML-attributes
      */
     public $widgetOptions = [];
+
+    /**
+     * @var string Thumbnail configuration id
+     * By default this is the first thumbnail configuration
+     * If false, then a full-sized picture will be used
+     */
+    public $thumbnail;
+
+    /**
+     * @var bool Watermark thumbnail
+     * Only works when $this->thumbnail is false
+     */
+    public $watermark = false;
 
     /**
      * @return integer
@@ -36,6 +49,18 @@ class PicWidget extends \yii\widgets\InputWidget
         }
     }
 
+    public function getThumbnailUrl(): ?string
+    {
+        if ($file = $this->getFile()) {
+            if ($this->thumbnail === false) {
+                return $file->getUrl($this->watermark);
+            } else {
+                return $file->getThumbUrl($this->thumbnail);
+            }
+        }
+        return null;
+    }
+
     public function run()
     {
         PicWidgetAsset::register($this->view);
@@ -43,6 +68,8 @@ class PicWidget extends \yii\widgets\InputWidget
         if ($this->getValue()) {
             Html::addCssClass($this->widgetOptions,'show-picture');
         }
+        $this->widgetOptions['data']['thumbnail-fullsize'] = $this->thumbnail === false;
+        $this->widgetOptions['data']['thumbnail'] = $this->thumbnail;
         return $this->render('pic', [
             'widget' => $this,
             'input' => $this->renderInputHtml('hidden'),

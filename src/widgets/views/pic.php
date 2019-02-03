@@ -22,11 +22,15 @@ use yii\helpers\Html;
     <span class="rotate-left"></span>
     <span class="rotate-right"></span>
 
-    <label
-        class="picture"
-        for="<?= $widget->id ?>-file"
-        <?= $file ? 'style="background-image: url(\'' . $file->getThumbUrl() . '\')"' : '' ?>
-        ></label>
+    <?= Html::tag('label', '', [
+        'class' => 'picture',
+        'for' => $widget->id . '-file',
+        'style' => [
+            'background-image' => ($thumbUrl = $widget->getThumbnailUrl())
+                ? 'url(\'' . $thumbUrl . '\')'
+                : null,
+        ],
+    ]) ?>
 
     <label class="upload" for="<?= $widget->id . '-file' ?>"></label>
 

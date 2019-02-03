@@ -66,7 +66,8 @@
         let $img = this.find('.picture');
         let fileInputName = $fileInput.attr('name');
         let url = '/' + kl83FileStorageOptions.moduleId + '/default/upload' +
-            '?attributes=' + fileInputName;
+            '?attributes=' + fileInputName +
+            '&thumbnail=' + $widget.data('thumbnail');
         this.picWidget('delete', true);
         this.closest('form').ajaxSubmit({
             url: url,
@@ -75,20 +76,19 @@
                 $hiddenInput.val(data.files[fileInputName][0].id);
                 $fileInput.val('');
                 $widget.removeClass('dd-action');
+                if ($widget.data('thumbnail-fullsize')) {
+                    var url = data.files[fileInputName][0].url;
+                } else {
+                    url = data.files[fileInputName][0].thumbUrl;
+                }
                 if ($widget.hasClass('show-picture')) {
                     $widget.addClass('change-picture');
                     setTimeout(function () {
-                        $img.css(
-                            'backgroundImage',
-                            "url('" + data.files[fileInputName][0].thumbUrl + "')"
-                        );
+                        $img.css('backgroundImage', "url('" + url + "')");
                         $widget.removeClass('change-picture');
                     }, 200);
                 } else {
-                    $img.css(
-                        'backgroundImage',
-                        "url('" + data.files[fileInputName][0].thumbUrl + "')"
-                    );
+                    $img.css('backgroundImage', "url('" + url + "')");
                     $widget.addClass('show-picture');
                 }
                 $widget.trigger('pic-widget:change');

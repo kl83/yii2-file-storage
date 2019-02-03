@@ -12,14 +12,17 @@ class UploadsResponse implements Iterator
      */
     private $data;
 
-    /**
-     * @param UploadsHandler $handler
-     */
-    public function __construct($handler)
+    public function __construct(UploadsHandler $handler, string $thumbnail = null)
     {
         $this->data = [
             'files' => ArrayHelper::toArray($handler->savedFiles, [
-                File::class => ['id', 'url', 'thumbUrl'],
+                File::class => [
+                    'id',
+                    'url',
+                    'thumbUrl' => function (File $file) use ($thumbnail) {
+                        return $file->getThumbUrl($thumbnail);
+                    }
+                ],
             ]),
             'fileset' => $handler->fileset ? $handler->fileset->id : null,
         ];
