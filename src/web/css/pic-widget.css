@@ -39,7 +39,7 @@
 .kl83-pic-widget .rotate-left,
 .kl83-pic-widget .rotate-right {
   position: absolute;
-  bottom: 15px;
+  bottom: calc(50% - 10px);
   z-index: 1;
   display: block;
   width: 20px;
