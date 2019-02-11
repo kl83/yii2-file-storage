@@ -43,6 +43,11 @@ class Module extends \yii\base\Module
     public $jpegQuality = 60;
 
     /**
+     * @var int
+     */
+    public $uploadTimeLimit = 600;
+
+    /**
      * @var array Thumbnails configurations
      * You can override the thumbs config. But be careful,
      * the first (and default) factory config is used by the widgets.

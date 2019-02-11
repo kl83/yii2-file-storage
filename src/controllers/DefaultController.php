@@ -32,6 +32,7 @@ class DefaultController extends Controller
      */
     public function actionUpload($attributes = null, $filesetId = null, $thumbnail = null)
     {
+        set_time_limit(Module::findInstance()->uploadTimeLimit);
         $uploadedFiles = new UploadsIterator($attributes);
         $handler = new UploadsHandler([
             'uploadedFiles' => $uploadedFiles,
