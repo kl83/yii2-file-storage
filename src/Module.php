@@ -2,10 +2,12 @@
 
 namespace kl83\filestorage;
 
+use Imagine\Image\ImageInterface;
 use kl83\filestorage\models\Watermark;
 use kl83\filestorage\models\ThumbFactory;
 use Yii;
 use yii\console\Application as ConsoleApplication;
+use yii\helpers\ArrayHelper;
 
 /**
  * Module contain controller and models to store files in upload directory and
@@ -108,6 +110,11 @@ class Module extends \yii\base\Module
             'id' => $id,
             'width' => $this->thumbs[$id]['width'],
             'height' => $this->thumbs[$id]['height'],
+            'mode' => ArrayHelper::getValue(
+                $this->thumbs[$id],
+                'mode',
+                ImageInterface::THUMBNAIL_OUTBOUND
+            ),
         ]);
     }
 

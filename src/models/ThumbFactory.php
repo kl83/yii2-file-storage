@@ -2,8 +2,10 @@
 
 namespace kl83\filestorage\models;
 
+use Imagine\Image\ImageInterface;
 use kl83\filestorage\Module;
 use yii\base\BaseObject;
+use yii\imagine\Image;
 
 class ThumbFactory extends BaseObject
 {
@@ -21,6 +23,14 @@ class ThumbFactory extends BaseObject
      * @var int
      */
     public $height;
+
+    /**
+     * @var string
+     * @see ImageInterface::THUMBNAIL_OUTBOUND
+     * @see ImageInterface::THUMBNAIL_INSET
+     * @see Image::thumbnail()
+     */
+    public $mode;
 
     /**
      * @param File $file

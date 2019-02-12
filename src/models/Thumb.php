@@ -32,7 +32,8 @@ class Thumb extends BaseObject
                 $img = Image::thumbnail(
                     $this->file->getPath(),
                     $this->factory->width,
-                    $this->factory->height
+                    $this->factory->height,
+                    $this->factory->mode
                 );
                 $img->save($path, ['quality' => Module::getInstance()->jpegQuality]);
             } catch (Exception $exception) {
@@ -53,6 +54,11 @@ class Thumb extends BaseObject
     {
         $this->deleteThumbnail();
         $this->createThumbnail();
+    }
+
+    public function isExists(): bool
+    {
+        return file_exists($this->getPath());
     }
 
     private function getRelPath(): string
