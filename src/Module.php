@@ -5,6 +5,7 @@ namespace kl83\filestorage;
 use kl83\filestorage\models\Watermark;
 use kl83\filestorage\models\ThumbFactory;
 use Yii;
+use yii\console\Application as ConsoleApplication;
 
 /**
  * Module contain controller and models to store files in upload directory and
@@ -84,6 +85,18 @@ class Module extends \yii\base\Module
         parent::init();
         $this->uploadDir = Yii::getAlias($this->uploadDir);
         $this->uploadDirUrl = Yii::getAlias($this->uploadDirUrl);
+        if (Yii::$app instanceof ConsoleApplication) {
+            $this->controllerNamespace = 'kl83\filestorage\console';
+        }
+    }
+
+    public function getControllerPath()
+    {
+        if (Yii::$app instanceof ConsoleApplication) {
+            return __DIR__ . '/console';
+        } else {
+            return parent::getControllerPath();
+        }
     }
 
     public function getThumbFactory(string $id = null): ThumbFactory
@@ -96,6 +109,15 @@ class Module extends \yii\base\Module
             'width' => $this->thumbs[$id]['width'],
             'height' => $this->thumbs[$id]['height'],
         ]);
+    }
+
+    public function getAllThumbFactories()
+    {
+        $factories = [];
+        foreach (array_keys($this->thumbs) as $id) {
+            $factories[$id] = $this->getThumbFactory($id);
+        }
+        return $factories;
     }
 
     public function getWatermark(): Watermark
