@@ -18,10 +18,12 @@ class UploadsResponse implements Iterator
             'files' => ArrayHelper::toArray($handler->savedFiles, [
                 File::class => [
                     'id',
-                    'url',
+                    'url' => function (File $file) {
+                        return $file->getUrl(false);
+                    },
                     'thumbUrl' => function (File $file) use ($thumbnail) {
                         return $file->getThumbUrl($thumbnail);
-                    }
+                    },
                 ],
             ]),
             'fileset' => $handler->fileset ? $handler->fileset->id : null,

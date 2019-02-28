@@ -29,6 +29,22 @@ class PicWidget extends \yii\widgets\InputWidget
     public $watermark = false;
 
     /**
+     * @var bool
+     */
+    public $enableRotation = true;
+
+    /**
+     * @var bool
+     */
+    public $enableCropper;
+
+    /**
+     * @var array
+     * @see https://github.com/fengyuanchen/cropperjs#options
+     */
+    public $cropperOptions = [];
+
+    /**
      * @return integer
      */
     private function getValue()
@@ -70,6 +86,13 @@ class PicWidget extends \yii\widgets\InputWidget
         }
         $this->widgetOptions['data']['thumbnail-fullsize'] = $this->thumbnail === false;
         $this->widgetOptions['data']['thumbnail'] = $this->thumbnail;
+        if ($this->enableRotation) {
+            Html::addCssClass($this->widgetOptions, 'enable-rotation');
+        }
+        if ($this->enableCropper) {
+            CropperCmpAsset::register($this->view);
+            $this->widgetOptions['data']['cropper'] = $this->cropperOptions;
+        }
         return $this->render('pic', [
             'widget' => $this,
             'input' => $this->renderInputHtml('hidden'),

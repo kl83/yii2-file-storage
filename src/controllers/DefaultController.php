@@ -2,18 +2,13 @@
 
 namespace kl83\filestorage\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
-use yii\web\NotFoundHttpException;
-use kl83\filestorage\Module;
-use kl83\filestorage\models\File;
-use kl83\filestorage\models\FileSet;
 use kl83\filestorage\models\UploadsHandler;
 use kl83\filestorage\models\UploadsIterator;
 use kl83\filestorage\models\UploadsResponse;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
      * Saves files and return their attributes as json data
@@ -32,7 +27,7 @@ class DefaultController extends Controller
      */
     public function actionUpload($attributes = null, $filesetId = null, $thumbnail = null)
     {
-        set_time_limit(Module::findInstance()->uploadTimeLimit);
+        set_time_limit($this->module->uploadTimeLimit);
         $uploadedFiles = new UploadsIterator($attributes);
         $handler = new UploadsHandler([
             'uploadedFiles' => $uploadedFiles,
@@ -64,67 +59,5 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         $this->findFile($id)->delete();
-    }
-
-    /**
-     * @return bool
-     */
-    private function isUserCan()
-    {
-        $roles = Module::getInstance()->managerRoles;
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if (Yii::$app->user->can($role)) {
-                    return true;
-                }
-            }
-        } else {
-            return Yii::$app->user->can($roles);
-        }
-        return false;
-    }
-
-    /**
-     * @param integer $id
-     * @return File
-     * @throws ForbiddenHttpException
-     * @throws NotFoundHttpException
-     */
-    private function findFile($id)
-    {
-        $model = File::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
-        if (
-            $model->createdById &&
-            $model->createdById != Yii::$app->user->id &&
-            !$this->isUserCan()
-        ) {
-            throw new ForbiddenHttpException();
-        }
-        return $model;
-    }
-
-    /**
-     * @param integer $id
-     * @return FileSet
-     * @throws ForbiddenHttpException
-     * @throws NotFoundHttpException
-     */
-    private function findFileSet($id)
-    {
-        $model = FileSet::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
-        if (
-            $model->createdById &&
-            $model->createdById != Yii::$app->user->id &&
-            !$this->isUserCan()
-        ) {
-            throw new ForbiddenHttpException();
-        }
-        return $model;
     }
 }

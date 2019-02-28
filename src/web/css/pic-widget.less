@@ -39,7 +39,7 @@
         position: absolute;
         bottom: ~"calc(50% - 10px)";
         z-index: 1;
-        display: block;
+        display: none;
         width: 20px;
         height: 20px;
         background: white;
@@ -52,6 +52,11 @@
         transition: 0.2s;
         &:hover {
             opacity: 1 !important;
+        }
+    }
+    &.enable-rotation {
+        .rotate-left, .rotate-right {
+            display: block;
         }
     }
     .rotate-left {

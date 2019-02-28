@@ -41,7 +41,7 @@
   position: absolute;
   bottom: calc(50% - 10px);
   z-index: 1;
-  display: block;
+  display: none;
   width: 20px;
   height: 20px;
   background: white;
@@ -56,6 +56,10 @@
 .kl83-pic-widget .rotate-left:hover,
 .kl83-pic-widget .rotate-right:hover {
   opacity: 1 !important;
+}
+.kl83-pic-widget.enable-rotation .rotate-left,
+.kl83-pic-widget.enable-rotation .rotate-right {
+  display: block;
 }
 .kl83-pic-widget .rotate-left {
   right: calc(50% + 5px);

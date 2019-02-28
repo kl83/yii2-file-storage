@@ -28,6 +28,32 @@
         }
     }
 
+    function updateWidget(data) {
+        let $widget = this;
+        let $fileInput = this.find('input[type="file"]');
+        let $hiddenInput = this.find('input[type="hidden"]');
+        let $img = this.find('.picture');
+        let fileInputName = $fileInput.attr('name');
+        $hiddenInput.val(data.files[fileInputName][0].id);
+        $fileInput.val('');
+        $widget.removeClass('dd-action');
+        if ($widget.data('thumbnail-fullsize')) {
+            var url = data.files[fileInputName][0].url;
+        } else {
+            url = data.files[fileInputName][0].thumbUrl;
+        }
+        if ($widget.hasClass('show-picture')) {
+            $widget.addClass('change-picture');
+            setTimeout(function () {
+                $img.css('backgroundImage', "url('" + url + "')");
+                $widget.removeClass('change-picture');
+            }, 200);
+        } else {
+            $img.css('backgroundImage', "url('" + url + "')");
+            $widget.addClass('show-picture');
+        }
+    }
+
     var methods = {};
 
     methods.init = function () {
@@ -44,7 +70,7 @@
         if (!silence) {
             var $this = this;
             this.removeClass('show-picture');
-            setTimeout(function(){
+            setTimeout(function () {
                 $this.find('.picture').css('backgroundImage', 'none');
             }, 200);
             this.trigger('pic-widget:change');
@@ -62,36 +88,34 @@
     methods.upload = function () {
         let $widget = this;
         let $fileInput = this.find('input[type="file"]');
-        let $hiddenInput = this.find('input[type="hidden"]');
-        let $img = this.find('.picture');
         let fileInputName = $fileInput.attr('name');
         let url = '/' + kl83FileStorageOptions.moduleId + '/default/upload' +
             '?attributes=' + fileInputName +
             '&thumbnail=' + $widget.data('thumbnail');
-        this.picWidget('delete', true);
         this.closest('form').ajaxSubmit({
             url: url,
             type: 'post',
             success: function (data) {
-                $hiddenInput.val(data.files[fileInputName][0].id);
-                $fileInput.val('');
-                $widget.removeClass('dd-action');
-                if ($widget.data('thumbnail-fullsize')) {
-                    var url = data.files[fileInputName][0].url;
+                let cropperOptions = $widget.data('cropper');
+                if (cropperOptions) {
+                    cropImage(data.files[fileInputName][0].url, cropperOptions, function (cropOptions) {
+                        if (cropOptions) {
+                            $widget.picWidget('delete', true);
+                            let params = {
+                                id: data.files[fileInputName][0].id,
+                                options: cropOptions
+                            };
+                            $.get('/' + kl83FileStorageOptions.moduleId + '/crop', params, function () {
+                                updateWidget.apply($widget, [data]);
+                                $widget.trigger('pic-widget:change');
+                            });
+                        }
+                    });
                 } else {
-                    url = data.files[fileInputName][0].thumbUrl;
+                    $widget.picWidget('delete', true);
+                    updateWidget.apply($widget, [data]);
+                    $widget.trigger('pic-widget:change');
                 }
-                if ($widget.hasClass('show-picture')) {
-                    $widget.addClass('change-picture');
-                    setTimeout(function () {
-                        $img.css('backgroundImage', "url('" + url + "')");
-                        $widget.removeClass('change-picture');
-                    }, 200);
-                } else {
-                    $img.css('backgroundImage', "url('" + url + "')");
-                    $widget.addClass('show-picture');
-                }
-                $widget.trigger('pic-widget:change');
             }
         });
     };
