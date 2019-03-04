@@ -7,35 +7,53 @@ var cropImage;
     var $cropImage;
     var cropper;
     var _cb;
+    var _data;
+    var _allowHide;
+
+    function _cropImage(img, options) {
+        $cropImage.attr('src', img);
+        $cropPopup.modal('show');
+        setTimeout(function () {
+            cropper = new Cropper($cropImage.get(0), options);
+        }, 200);
+    }
 
     cropImage = function (img, options, cb) {
-        if (!$cropPopup) {
-            $cropPopup = $('<div id="cropper-cmp">' +
-                '<div class="img-wrapper"><img src="" alt=""></div>' +
-                '<span class="apply glyphicon glyphicon-ok"></span>' +
-                '<span class="cancel glyphicon glyphicon-remove"></span>' +
-                '</div>');
-            $cropImage = $cropPopup.find('img');
-            $('body').append($cropPopup);
-        } else {
-            $cropPopup.show();
-        }
-        $cropImage.attr('src', img);
-        cropper = new Cropper($cropImage.get(0), options);
+        _data = undefined;
         _cb = cb;
+        _allowHide = false;
+        if (!$cropPopup) {
+            $.get('/' + kl83FileStorageOptions.moduleId + '/crop/popup', function (data) {
+                $('body').append(data);
+                $cropPopup = $('#cropper-cmp');
+                $cropImage = $cropPopup.find('img');
+                _cropImage(img, options);
+            });
+        } else {
+            _cropImage(img, options);
+        }
     };
 
-    $(document).on('click', '#cropper-cmp .apply', function () {
-        var data = cropper.getData(true);
-        $cropPopup.hide();
+    $(document).on('hidden.bs.modal', '#cropper-cmp', function () {
         cropper.destroy();
-        _cb(data);
+        _cb(_data);
+    });
+
+    $(document).on('click', '#cropper-cmp .apply', function () {
+        _allowHide = true;
+        _data = cropper.getData(true);
+        $cropPopup.modal('hide');
     });
 
     $(document).on('click', '#cropper-cmp .cancel', function () {
-        $cropPopup.hide();
-        cropper.destroy();
-        _cb();
+        _allowHide = true;
+        $cropPopup.modal('hide');
+    });
+
+    $(document).on('hide.bs.modal', '#cropper-cmp', function (e) {
+        if (!_allowHide) {
+            return false;
+        }
     });
 
 })(jQuery);

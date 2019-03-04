@@ -6,6 +6,7 @@ use Imagine\Image\ImageInterface;
 use kl83\filestorage\models\Watermark;
 use kl83\filestorage\models\ThumbFactory;
 use Yii;
+use yii\base\Module as BaseModule;
 use yii\console\Application as ConsoleApplication;
 use yii\helpers\ArrayHelper;
 
@@ -13,7 +14,7 @@ use yii\helpers\ArrayHelper;
  * Module contain controller and models to store files in upload directory and
  * collect they in file sets.
  */
-class Module extends \yii\base\Module
+class Module extends BaseModule
 {
     /**
      * @var Module|null
@@ -90,6 +91,19 @@ class Module extends \yii\base\Module
         if (Yii::$app instanceof ConsoleApplication) {
             $this->controllerNamespace = 'kl83\filestorage\console';
         }
+        $this->registerTranslations();
+    }
+
+    public function registerTranslations()
+    {
+        Yii::$app->i18n->translations['modules/filestorage/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => __DIR__ . '/messages',
+            'fileMap' => [
+                'modules/filestorage/crop' => 'crop.php',
+            ],
+        ];
     }
 
     public function getControllerPath()

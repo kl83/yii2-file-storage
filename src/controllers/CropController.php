@@ -23,4 +23,9 @@ class CropController extends BaseController
             $cropper->crop();
         }
     }
+
+    public function actionPopup()
+    {
+        return $this->renderAjax('popup');
+    }
 }
