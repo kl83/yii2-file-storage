@@ -74,6 +74,13 @@ class File extends ActiveRecord
         return Module::findInstance()->uploadDir . '/' . $this->relPath;
     }
 
+    public function getUrlEncodedRelPath()
+    {
+        return preg_replace_callback('~[^/]+$~', function ($m) {
+            return rawurlencode($m[0]);
+        }, $this->relPath);
+    }
+
     /**
      * @param bool $watermark
      * @return string
@@ -88,7 +95,7 @@ class File extends ActiveRecord
                 Yii::warning($exception->getMessage());
             }
         }
-        return $module->uploadDirUrl . '/' . $this->relPath;
+        return $module->uploadDirUrl . '/' . $this->getUrlEncodedRelPath();
     }
 
     public function getThumb(string $id = null): Thumb

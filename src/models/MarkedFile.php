@@ -17,9 +17,11 @@ class MarkedFile
         $this->file = $file;
     }
 
-    private function getRelPath(): string
+    private function getRelPath(bool $encode = false): string
     {
-        return 'wm/' . $this->file->relPath;
+        return 'wm/' . $encode
+            ? $this->file->getUrlEncodedRelPath()
+            : $this->file->relPath;
     }
 
     private function getPath(): string
@@ -57,6 +59,6 @@ class MarkedFile
         if ($createFile) {
             $this->createMarkedFile();
         }
-        return Module::findInstance()->uploadDirUrl . '/' . $this->getRelPath();
+        return Module::findInstance()->uploadDirUrl . '/' . $this->getRelPath(true);
     }
 }

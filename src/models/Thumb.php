@@ -61,9 +61,12 @@ class Thumb extends BaseObject
         return file_exists($this->getPath());
     }
 
-    private function getRelPath(): string
+    private function getRelPath(bool $encode = false): string
     {
-        return 'thumbs/' . $this->factory->id . '/' . $this->file->relPath;
+        return 'thumbs/' . $this->factory->id . '/' .
+            $encode
+                ? $this->file->getUrlEncodedRelPath()
+                : $this->file->relPath;
     }
 
     public function getPath(): string
@@ -73,6 +76,6 @@ class Thumb extends BaseObject
 
     public function getUrl(): string
     {
-        return Module::findInstance()->uploadDirUrl . '/' . $this->getRelPath();
+        return Module::findInstance()->uploadDirUrl . '/' . $this->getRelPath(true);
     }
 }
