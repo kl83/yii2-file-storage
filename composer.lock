@@ -484,16 +484,16 @@
         },
         {
             "name": "kl83/yii2-sortable-behaviour",
-            "version": "v1.1.12",
+            "version": "v1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kl83/yii2-sortable-behaviour.git",
-                "reference": "c1205fe2483c68eda79e162539522c4b11ab6052"
+                "reference": "5014123430f1f5867799e9aeb549aec923c80ecd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kl83/yii2-sortable-behaviour/zipball/c1205fe2483c68eda79e162539522c4b11ab6052",
-                "reference": "c1205fe2483c68eda79e162539522c4b11ab6052",
+                "url": "https://api.github.com/repos/kl83/yii2-sortable-behaviour/zipball/5014123430f1f5867799e9aeb549aec923c80ecd",
+                "reference": "5014123430f1f5867799e9aeb549aec923c80ecd",
                 "shasum": ""
             },
             "require": {
@@ -516,8 +516,14 @@
                     "email": "solovyov.a.a.19@gmail.com"
                 }
             ],
-            "description": "Yii2 behaviours to sort models",
-            "time": "2017-07-22T20:00:59+00:00"
+            "description": "Yii2 behaviours to sort and select records inside adjency table",
+            "keywords": [
+                "Behavior",
+                "data",
+                "database",
+                "yii2"
+            ],
+            "time": "2019-04-06T06:36:30+00:00"
         },
         {
             "name": "mustache/mustache",
@@ -635,16 +641,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.16",
+            "version": "2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "789de9783d41e6ca10fffc3644a43a764f79b399"
+                "reference": "b56159228c3b4990e38cf41ddd69af27ab015bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/789de9783d41e6ca10fffc3644a43a764f79b399",
-                "reference": "789de9783d41e6ca10fffc3644a43a764f79b399",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/b56159228c3b4990e38cf41ddd69af27ab015bea",
+                "reference": "b56159228c3b4990e38cf41ddd69af27ab015bea",
                 "shasum": ""
             },
             "require": {
@@ -731,7 +737,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-01-30T23:54:16+00:00"
+            "time": "2019-03-22T21:26:26+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

@@ -3,9 +3,10 @@
 namespace kl83\filestorage\models;
 
 use Exception;
+use kl83\filestorage\behaviours\SortableBehaviour;
+use kl83\filestorage\Module;
 use Yii;
 use yii\db\ActiveRecord;
-use kl83\filestorage\Module;
 use yii\imagine\Image;
 
 /**
@@ -29,7 +30,7 @@ class File extends ActiveRecord
     {
         return [
             [
-                'class' => 'kl83\behaviours\SortableBehaviour',
+                'class' => SortableBehaviour::class,
                 'parentIdField' => false,
             ],
         ];
