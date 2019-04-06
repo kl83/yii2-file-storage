@@ -484,16 +484,16 @@
         },
         {
             "name": "kl83/yii2-sortable-behaviour",
-            "version": "v1.1.13",
+            "version": "v1.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kl83/yii2-sortable-behaviour.git",
-                "reference": "5014123430f1f5867799e9aeb549aec923c80ecd"
+                "reference": "fd46774bde613179e4de49385a850b799b18e8d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kl83/yii2-sortable-behaviour/zipball/5014123430f1f5867799e9aeb549aec923c80ecd",
-                "reference": "5014123430f1f5867799e9aeb549aec923c80ecd",
+                "url": "https://api.github.com/repos/kl83/yii2-sortable-behaviour/zipball/fd46774bde613179e4de49385a850b799b18e8d6",
+                "reference": "fd46774bde613179e4de49385a850b799b18e8d6",
                 "shasum": ""
             },
             "require": {
@@ -523,7 +523,7 @@
                 "database",
                 "yii2"
             ],
-            "time": "2019-04-06T06:36:30+00:00"
+            "time": "2019-04-06T15:23:11+00:00"
         },
         {
             "name": "mustache/mustache",

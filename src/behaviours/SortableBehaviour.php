@@ -23,4 +23,18 @@ class SortableBehaviour extends BaseBehaviour
             $file->save(false);
         }
     }
+ 
+    protected function getMinIdx($parentId = 0, $moreThen = false)
+    {
+        $query = File::find()
+            ->where(['fileSetId' => $this->owner->fileSetId]);
+        if ($moreThen !== false) {
+            $query->andWhere(['>', 'idx', $moreThen]);
+        }
+        $result = $query->min('idx');
+        if ($result === null) {
+            $result = $moreThen + 100;
+        }
+        return $result;
+    }
 }
